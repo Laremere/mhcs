@@ -20,4 +20,12 @@ public class Module {
                 && yposition >= 1
                 && yposition <= 50;
     }
+    
+    public Module(Module other) {
+        this.id = other.id;
+        this.orientation = other.orientation;
+        this.status = other.status;
+        this.xposition = other.xposition;
+        this.yposition = other.yposition;
+    }
 }
