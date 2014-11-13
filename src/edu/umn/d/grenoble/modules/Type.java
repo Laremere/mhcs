@@ -1,30 +1,36 @@
 package edu.umn.d.grenoble.modules;
 
 public enum Type {
-    Invalid ("INVALID", -1, -1),
-    Plain ("Plain", 1, 40),
-    Dormitory ("Dormitory", 61, 80),
-    Sanitation ("Sanitation", 91, 100),
-    FoodWater ("Food & Water", 111, 120),
-    Gym ("Gym & Relaxation", 131, 134),
-    Canteen ("Canteen", 141, 144),
-    Power ("Power", 151, 154),
-    Control ("Control", 161, 164),
-    Airlock ("Airlock", 171, 174),
-    Medical ("Medical", 181, 184);
+    Invalid ("INVALID", -1, -1, "Unkown"),
+    Plain ("Plain", 1, 40, "Plain"),
+    Dormitory ("Dormitory", 61, 80, "Dormitory"),
+    Sanitation ("Sanitation", 91, 100, "Sanitation"),
+    FoodWater ("Food & Water", 111, 120, "Food"),
+    Gym ("Gym & Relaxation", 131, 134, "Gym"),
+    Canteen ("Canteen", 141, 144, "Canteen"),
+    Power ("Power", 151, 154, "Power"),
+    Control ("Control", 161, 164, "Control"),
+    Airlock ("Airlock", 171, 174, "Airlock"),
+    Medical ("Medical", 181, 184, "Medical");
     
     private final String plainName;
     private final int startId;
     private final int endId;
+    private final String filename;
     
-    Type(String plainName, int startId, int endId) {
+    Type(String plainName, int startId, int endId, String filename) {
         this.plainName = plainName;
         this.startId = startId;
         this.endId = endId;
+        this.filename = filename;
     }
     
     public String getPlainName() {
         return this.plainName;
+    }
+    
+    public String getImageUrl() {
+        return "images/modules/" + filename + ".jpg";
     }
     
     public static Type getFromId(int id) {
@@ -35,4 +41,5 @@ public enum Type {
         }
         return Invalid;
     }
+    
 }
