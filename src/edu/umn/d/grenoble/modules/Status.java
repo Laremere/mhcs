@@ -1,18 +1,58 @@
 package edu.umn.d.grenoble.modules;
 
+/**
+ * The status of the module.
+ * @author Scott Redig
+ * @author Justin Pieper
+ * @author Paul Rodysill
+ */
 public enum Status {
-    Unknown ("Unkown"),
-    Good ("Good"),
-    NeedsRepair ("Needs Repair"),
-    Damaged ("Damaged");
     
-    private final String name;
+ /* Initialization */
     
-    private Status(String name) {
-        this.name = name;
+    /**
+     * This indicates that the module's status is good.
+     */
+    GOOD ("The module's status is good."),
+    
+    /**
+     * This indicates that the module's status is unknown.
+     */
+    UNKNOWN ("The module's status is currently unknown."),
+    
+    /**
+     * This indicates that the module is damaged but can still be repaired.
+     */
+    NEEDS_REPAIR ("The module is damaged and needs repair."),
+    
+    /**
+     * This indicates that the module is damaged and cannot be repaired.
+     */
+    BEYOND_REPAIR ("The module is damaged beyond repair.");
+       
+    /**
+     * Constructor - Associates the module's status with its description.
+     * @param description - The description of the module's status 
+     */
+    private Status(String description) {
+        this.description = description;
     }
     
-    public String getName() {
-        return this.name;
+    /**
+     * Contains a brief description of the module's current status.
+     */
+    private final String description; 
+ 
+    
+    
+ /* Methods */
+    
+    /**
+     * Getter (Accessor) for the description of the module's status.
+     * @return the description of the module's status
+     */ 
+    public String getDescription() {
+        return this.description;
     }
+    
 }
