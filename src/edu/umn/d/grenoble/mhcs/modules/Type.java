@@ -1,4 +1,4 @@
-package edu.umn.d.grenoble.modules;
+package edu.umn.d.grenoble.mhcs.modules;
 
 public enum Type {
     Invalid ("INVALID", -1, -1, "Unkown"),

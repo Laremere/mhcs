@@ -1,10 +1,14 @@
-package edu.umn.d.grenoble.modules;
+package edu.umn.d.grenoble.mhcs.modules;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Area {
-    List<Module> modules = new ArrayList<Module>();
+    public List<Module> modules = new ArrayList<Module>();
+    
+    public Area(){
+        
+    }
     
     public Area(Area other) {
         for (Module m : other.modules) {

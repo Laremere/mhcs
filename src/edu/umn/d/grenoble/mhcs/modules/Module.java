@@ -1,4 +1,4 @@
-package edu.umn.d.grenoble.modules;
+package edu.umn.d.grenoble.mhcs.modules;
 
 public class Module {
     public int id;
@@ -7,6 +7,10 @@ public class Module {
     public int xposition = 0;
     public int yposition = 0;
 
+    public Module(){
+        
+    }
+    
     public Type getType() {
         return Type.getFromId(id);
     }

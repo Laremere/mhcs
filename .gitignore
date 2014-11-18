@@ -41,3 +41,4 @@ target
 gwt-unitCache/
 war/WEB-INF/deploy
 war/mars_habitat_configuration_system/
+.gwt/
