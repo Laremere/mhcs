@@ -12,6 +12,9 @@ import edu.umn.d.grenoble.mhcs.modules.Status;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
+ * @author Scott Redig
+ * @author Justin Pieper
+ * @author Paul Rodysill
  */
 public class MarsHabitatConfigurationSystem implements EntryPoint {
     AreaRenderer areaRenderer;

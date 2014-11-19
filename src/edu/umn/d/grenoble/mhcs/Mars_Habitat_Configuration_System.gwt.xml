@@ -9,25 +9,21 @@
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
 
-  <!-- Inherit the default GWT style sheet.  You can change       -->
-  <!-- the theme of your GWT application by uncommenting          -->
-  <!-- any one of the following lines.                            -->
+  <!-- Inherit the default GWT style sheet.                       -->
   <inherits name='com.google.gwt.user.theme.clean.Clean'/>
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
-  <!-- Other module inherits                                      -->
+  <!-- Inherit the JSONParser                                     -->
+  <inherits name="com.google.gwt.json.JSON"/>
+  
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='edu.umn.d.grenoble.mhcs.client.MarsHabitatConfigurationSystem'/>
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
-<<<<<<< HEAD
-=======
-  
->>>>>>> refs/remotes/justin/master
   <source path='modules'/>
 
   <!-- allow Super Dev Mode -->
