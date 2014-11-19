@@ -5,9 +5,4 @@ public enum Orientation {
     Upright,
     OnSide,
     UpsideDown;
-<<<<<<< HEAD
-=======
-    
-
->>>>>>> refs/remotes/justin/master
 }
