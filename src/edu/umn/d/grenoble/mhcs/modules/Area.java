@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Area {
-    List<Module> modules = new ArrayList<Module>();
+    public List<Module> modules = new ArrayList<Module>();
+    
+    public Area(){
+        
+    }
     
     public Area(Area other) {
         for (Module m : other.modules) {
@@ -12,10 +16,6 @@ public class Area {
         }
     }
     
-    public Area() {
-        // TODO Auto-generated constructor stub
-    }
-
     public void addModule(Module module) {
         modules.add(module);
     }

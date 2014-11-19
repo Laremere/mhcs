@@ -2,6 +2,8 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -37,5 +39,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         }
         areaRenderer.RenderArea(area);
         
+        AddModulesPanel thisPanel = new AddModulesPanel();        
+        RootPanel.get().add(thisPanel.getAddModulesPanel());
     }
 }

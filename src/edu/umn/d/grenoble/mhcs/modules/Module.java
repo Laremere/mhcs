@@ -7,6 +7,10 @@ public class Module {
     public int xposition = 0;
     public int yposition = 0;
 
+    public Module(){
+        
+    }
+    
     public Type getType() {
         return Type.getFromId(id);
     }
@@ -27,9 +31,5 @@ public class Module {
         this.status = other.status;
         this.xposition = other.xposition;
         this.yposition = other.yposition;
-    }
-
-    public Module() {
-        // TODO Auto-generated constructor stub
     }
 }
