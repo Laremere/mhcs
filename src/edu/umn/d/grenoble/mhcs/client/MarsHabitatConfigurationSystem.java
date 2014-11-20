@@ -6,9 +6,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.modules.Area;
-import edu.umn.d.grenoble.mhcs.modules.Module;
-import edu.umn.d.grenoble.mhcs.modules.Orientation;
-import edu.umn.d.grenoble.mhcs.modules.Status;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
