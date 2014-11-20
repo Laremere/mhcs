@@ -11,8 +11,8 @@ import java.util.List;
  * @author Paul Rodysill
  */
 public class Area {
-    final static int Width = 100;
-    final static int Height = 100;
+    public final static int Width = 100;
+    public final static int Height = 50;
     
  /* Initialization */
     

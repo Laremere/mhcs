@@ -22,7 +22,7 @@ import java.util.Map;
 public class AreaRenderer {
     private static final int tileSize = 10;
     private Canvas canvas;
-    private int imagesRemaining = 0;
+    private int imagesRemaining;
     private Map<String, ImageElement> images = new HashMap<String, ImageElement>();
     
     public AreaRenderer(final MarsHabitatConfigurationSystem mhcs) {
@@ -35,22 +35,23 @@ public class AreaRenderer {
             }
         }
         
-        imagesRemaining = toLoad.size();
+        this.imagesRemaining = toLoad.size();
         
         for (final String filePath : toLoad) {
             final Image img = new Image(filePath);
-            final ImageElement imgHandler = ImageElement.as(img.getElement());;
-            images.put(filePath, imgHandler);
+            final ImageElement imgHandler = ImageElement.as(img.getElement());
+            this.images.put(filePath, imgHandler);
             img.addErrorHandler(new ErrorHandler(){
                 @Override
-                public void onError(ErrorEvent event) {
+                public void onError(final ErrorEvent event) {
                     throw new Error("Image failed to load: " + filePath);
                 }
             });
+            final AreaRenderer areaRenderer = this;
             img.addLoadHandler(new LoadHandler(){
-                public void onLoad(LoadEvent event) {
-                    imagesRemaining --;
-                    if (imagesRemaining <= 0) {
+                public void onLoad(final LoadEvent event) {
+                    areaRenderer.imagesRemaining -= 1;
+                    if (areaRenderer.imagesRemaining <= 0) {
                         mhcs.Begin();
                     }
                 }
@@ -59,34 +60,35 @@ public class AreaRenderer {
             RootPanel.get().add(img);
         }
         
-        canvas = Canvas.createIfSupported();
-        if (canvas == null) {
+        this.canvas = Canvas.createIfSupported();
+        if (this.canvas == null) {
             return;
         }
         
-        canvas.setSize(tileSize * 100 + "px", tileSize * 50 + "px");
-        canvas.setCoordinateSpaceWidth(tileSize * 100);
-        canvas.setCoordinateSpaceHeight(tileSize * 50);
+        final String px = "px";
+        this.canvas.setSize(tileSize * Area.Width + px, tileSize * Area.Height + px);
+        this.canvas.setCoordinateSpaceWidth(tileSize * Area.Width);
+        this.canvas.setCoordinateSpaceHeight(tileSize * Area.Height);
     }
     
-    public void RenderArea(Area area) {
-        Context2d context = canvas.getContext2d();
+    public void RenderArea(final Area area) {
+        Context2d context = this.canvas.getContext2d();
         
         context.setFillStyle("#444444");
-        context.fillRect(0, 0, tileSize * 100, tileSize * 50);
+        context.fillRect(0, 0, tileSize * Area.Width, tileSize * Area.Height);
         
         for (Module module : area.getModules()) {
             context.drawImage(
-                    images.get(module.getType().getImageUrl()),
+                    this.images.get(module.getType().getImageUrl()),
                     (module.getX() - 1) * tileSize, 
-                    (50 - module.getY()) * tileSize,
+                    (Area.Height - module.getY()) * tileSize,
                     tileSize, tileSize);
         }
         
     }
     
     public Canvas GetCanvas() {
-        return canvas;
+        return this.canvas;
     }
     
 }
