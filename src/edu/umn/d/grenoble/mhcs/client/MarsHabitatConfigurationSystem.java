@@ -2,8 +2,6 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -19,19 +17,23 @@ import edu.umn.d.grenoble.mhcs.modules.Status;
 public class MarsHabitatConfigurationSystem implements EntryPoint {
     AreaRenderer areaRenderer;
     
+    public MarsHabitatConfigurationSystem(){
+    }
+    
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        areaRenderer = new AreaRenderer(this);
+        this.areaRenderer = new AreaRenderer(this);
      
     }
     
     //Called by areaRenderer, when the images are preloaded.
     public void Begin() {
-        RootPanel.get().add(areaRenderer.GetCanvas());
+        RootPanel.get().add(this.areaRenderer.GetCanvas());
         Area area = new Area();
-        for (int i = 1; i <= 10; i++) {
+        final int NumberOfTestModules = 10;
+        for (int i = 1; i <= NumberOfTestModules; i+=1) {
             Module module = new Module();
             module.setX(i);
             module.setY(i);
@@ -40,7 +42,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
             module.setStatus(Status.GOOD);
             area.addModule(module);
         }
-        areaRenderer.RenderArea(area);
+        this.areaRenderer.RenderArea(area);
         
         AddModulesPanel thisPanel = new AddModulesPanel();        
         RootPanel.get().add(thisPanel.getAddModulesPanel());
