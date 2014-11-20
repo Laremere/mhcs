@@ -1,4 +1,4 @@
-package edu.umn.edu.d.grenoble.mhcs.bus;
+package edu.umn.d.grenoble.mhcs.bus;
 
 import com.google.gwt.event.shared.SimpleEventBus;
 

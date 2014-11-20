@@ -10,12 +10,12 @@ import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
+import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
+import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Type;
-import edu.umn.edu.d.grenoble.mhcs.bus.AreaUpdateEvent;
-import edu.umn.edu.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
-import edu.umn.edu.d.grenoble.mhcs.bus.Bus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AreaRenderer {
-    private static final int tileSize = 10;
+    private static final int tileSize = 40;
     private Canvas canvas;
     private int imagesRemaining;
     private Map<String, ImageElement> images = new HashMap<String, ImageElement>();
