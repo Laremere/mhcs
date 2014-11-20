@@ -40,6 +40,7 @@ public class AreaRenderer {
                 toLoad.add(url);
             }
         }
+        toLoad.add("images/MarsModuleLandingArea.jpg");
         
         this.imagesRemaining = toLoad.size();
         
@@ -101,7 +102,7 @@ public class AreaRenderer {
         Context2d context = this.canvas.getContext2d();
         
         context.setFillStyle("#444444");
-        context.fillRect(0, 0, tileSize * Area.Width, tileSize * Area.Height);
+        context.drawImage(this.images.get("images/MarsModuleLandingArea.jpg"), 0, 0, Area.Width * tileSize, Area.Height * tileSize);
         
         for (Module module : area.getModules()) {
             context.drawImage(
