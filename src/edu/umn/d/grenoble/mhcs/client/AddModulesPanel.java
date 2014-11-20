@@ -9,7 +9,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 
+import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
+import edu.umn.d.grenoble.mhcs.bus.AreaClickEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
+import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -36,6 +39,7 @@ public class AddModulesPanel{
     private ListBox condition;
     private Label orientationLabel;
     private Label conditionLabel;
+    private Module moduleToEdit;
     
     public AddModulesPanel() {
         this.moduleList = new Area();
@@ -84,6 +88,48 @@ public class AddModulesPanel{
         final AddModulesPanel addModulesPanel = this;
         this.submitButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
+                if(moduleToEdit == null){
+                    Module currentModule = new Module();
+                    currentModule.setId(Integer.parseInt(addModulesPanel.moduleNumber.getText()));
+                    currentModule.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
+                    currentModule.setY(Integer.parseInt(addModulesPanel.coorY.getText()));
+
+                    currentModule.setOrientation(Orientation.values()[orientation.getSelectedIndex()]);
+                    currentModule.setStatus(Status.values()[condition.getSelectedIndex()]);
+                    if(currentModule.isValid()){                    
+                        addModulesPanel.moduleList.addModule(currentModule);
+                        Bus.bus.fireEvent(new AreaUpdateEvent(addModulesPanel.moduleList));
+                        Window.alert("Module added" + "\n" + addModulesPanel.moduleList.getModules().size() 
+                                + " module(s) have been logged");
+                        addModulesPanel.clearPanel();
+                    }
+                    else{
+                        Window.alert("Invalid entry");
+                    }                    
+                }
+                else{
+                    moduleToEdit.setId(Integer.parseInt(addModulesPanel.moduleNumber.getText()));
+                    moduleToEdit.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
+                    moduleToEdit.setY(Integer.parseInt(addModulesPanel.coorY.getText()));
+                    moduleToEdit.setOrientation(Orientation.values()[orientation.getSelectedIndex()]);
+                    moduleToEdit.setStatus(Status.values()[condition.getSelectedIndex()]);
+                    if(moduleToEdit.isValid()){                    
+                        
+                        Bus.bus.fireEvent(new AreaUpdateEvent(addModulesPanel.moduleList));
+                        Window.alert("Module added" + "\n" + addModulesPanel.moduleList.getModules().size() 
+                                + " module(s) have been logged");
+                        addModulesPanel.clearPanel();
+                    }
+                    else{
+                        Window.alert("Invalid entry");
+                    }                         
+
+                }
+                
+                
+                
+                
+                /**
                 Module currentModule = new Module();
                 currentModule.setId(Integer.parseInt(addModulesPanel.moduleNumber.getText()));
                 currentModule.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
@@ -101,6 +147,7 @@ public class AddModulesPanel{
                 else{
                     Window.alert("Invalid entry");
                 }
+                */
             }
         });
         
@@ -112,6 +159,15 @@ public class AddModulesPanel{
             }
         });
         
+        Bus.bus.addHandler(AreaClickEvent.TYPE, new AreaClickEventHandler(){
+            @Override
+            public void onEvent(final AreaClickEvent event) {
+               moduleToEdit = moduleList.occupied(event.getX(), event.getY());
+               
+            }
+            
+        });
+               
         
         
     }
