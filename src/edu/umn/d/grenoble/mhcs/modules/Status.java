@@ -31,17 +31,17 @@ public enum Status {
     BEYOND_REPAIR ("The module is damaged beyond repair.");
        
     /**
-     * Constructor - Associates the module's status with its description.
-     * @param description - The description of the module's status 
-     */
-    private Status(String description) {
-        this.description = description;
-    }
-    
-    /**
      * Contains a brief description of the module's current status.
      */
     private final String description; 
+    
+    /**
+     * Constructor - Associates the module's status with its description.
+     * @param description - The description of the module's status 
+     */
+    private Status(final String description_) {
+        this.description = description_;
+    }
  
     
     

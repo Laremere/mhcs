@@ -46,9 +46,9 @@ public enum Orientation {
      * @param description - The description of the module's status 
      * @param flipsNeeded - The number of flips required for the module to be upright
      */
-    private Orientation(String description, int flipsNeeded) {
-        this.description = description;
-        this.flipsNeeded = flipsNeeded;
+    private Orientation(final String description_, final int flipsNeeded_) {
+        this.description = description_;
+        this.flipsNeeded = flipsNeeded_;
     }
    
     

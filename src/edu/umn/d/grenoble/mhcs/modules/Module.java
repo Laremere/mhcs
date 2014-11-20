@@ -18,12 +18,12 @@ public class Module {
     /**
      * The <b>X-Coordinate</b> of the module.
      */
-    private int xCoordinate = 0;
+    private int xCoordinate;
     
     /**
      * The <b>Y-Coordinate</b> of the module.
      */
-    private int yCoordinate = 0;
+    private int yCoordinate;
     
     /**
      * The <b>orientation</b> of the module.
@@ -48,16 +48,16 @@ public class Module {
      * @param orientation - The orientation of the module
      * @param status - The status of the module
      */
-    public Module(int idNumber, int xCoordinate, int yCoordinate, 
-                  Orientation orientation, Status status) {
-        this.idNumber = idNumber; 
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
-        this.orientation = orientation;
-        this.status = status;      
-	}
+    public Module(final int idNumber_, final int xCoordinate_, final int yCoordinate_, 
+                  final Orientation orientation_, final Status status_) {
+        this.idNumber = idNumber_; 
+        this.xCoordinate = xCoordinate_;
+        this.yCoordinate = yCoordinate_;
+        this.orientation = orientation_;
+        this.status = status_;      
+    }
     
-    public Module(Module other) {
+    public Module(final Module other) {
         this.idNumber = other.idNumber;
         this.orientation = other.orientation;
         this.status = other.status;
@@ -73,7 +73,7 @@ public class Module {
      * @return The ID number of the module
      */ 
     public int getId() {
-        return idNumber;
+        return this.idNumber;
     }
     
     /**
@@ -81,7 +81,7 @@ public class Module {
      * @return The X-Coordinate of the module
      */ 
     public int getX() {
-        return xCoordinate;
+        return this.xCoordinate;
     }
    
    /**
@@ -89,7 +89,7 @@ public class Module {
     * @return The Y-Coordinate of the module
     */ 
     public int getY() {
-        return yCoordinate;
+        return this.yCoordinate;
     }
    
    /**
@@ -97,7 +97,7 @@ public class Module {
     * @return The orientation of the module
     */ 
     public Orientation getOrientation() {
-        return orientation;
+        return this.orientation;
     }
    
     /**
@@ -113,54 +113,54 @@ public class Module {
      * @return The current status of module
      */ 
     public Status getStatus() {
-        return status;
+        return this.status;
     }
     
-   /**
-    * Setter (Mutator) for the module's ID number. The module type and image URL also
-    * get updated reflecting the new ID number. The new ID can only be set
-    * if the module's ID has not yet been set and the new ID is valid.
-    * @param newId - The ID number of the module
-    */ 
-   public void setId(int newId) {
-       this.idNumber = newId;
-   }
+    /**
+     * Setter (Mutator) for the module's ID number. The module type and image URL also
+     * get updated reflecting the new ID number. The new ID can only be set
+     * if the module's ID has not yet been set and the new ID is valid.
+     * @param newId - The ID number of the module
+     */ 
+    public void setId(final int newId) {
+        this.idNumber = newId;
+    }
    
+    /**
+     * Setter (Mutator) for the module's X-Coordinate.
+     * Only input between 1 and 100 is accepted. Invalid data will
+     * result in no change to the X-Coordinate of the module.
+     * @param newX - The new X-Coordinate of the module
+     */ 
+    public void setX(final int newX) {
+        this.xCoordinate = newX;
+    }
+  
    /**
-    * Setter (Mutator) for the module's X-Coordinate.
-    * Only input between 1 and 100 is accepted. Invalid data will
-    * result in no change to the X-Coordinate of the module.
-    * @param newX - The new X-Coordinate of the module
+    * Setter (Mutator) for the module's Y-Coordinate.
+    * Only input between 1 and 50 is accepted. Invalid data will
+    * result in no change to the Y-Coordinate of the module.
+    * @param newY - The new Y-Coordinate of the module
     */ 
-   public void setX(int newX) {
-       xCoordinate = newX;
-   }
+    public void setY(final int newY) {
+        this.yCoordinate = newY;
+    }
   
-  /**
-   * Setter (Mutator) for the module's Y-Coordinate.
-   * Only input between 1 and 50 is accepted. Invalid data will
-   * result in no change to the Y-Coordinate of the module.
-   * @param newY - The new Y-Coordinate of the module
-   */ 
-   public void setY(int newY) {
-       this.yCoordinate = newY;
-   }
-  
-  /**
-   * Setter (Mutator) for the module's orientation.
-   * @param newOrientation - The new orientation of the module
-   */ 
-   public void setOrientation(Orientation newOrientation) {
-       orientation = newOrientation;
-   }
+   /**
+    * Setter (Mutator) for the module's orientation.
+    * @param newOrientation - The new orientation of the module
+    */ 
+    public void setOrientation(final Orientation newOrientation) {
+        this.orientation = newOrientation;
+    }
    
-   /**
-    * Setter (Mutator) for the module's status.
-    * @param newStatus - The new status of module
-    */ 
-   public void setStatus(Status newStatus) {
-       status = newStatus;
-   }
+    /**
+     * Setter (Mutator) for the module's status.
+     * @param newStatus - The new status of module
+     */ 
+    public void setStatus(final Status newStatus) {
+        this.status = newStatus;
+    }
     
     /**
      * Checks if the module is in the landing zone and has information logged
@@ -169,11 +169,11 @@ public class Module {
      */
     public boolean isValid() {
         return this.getType() != Type.INVALID
-                && orientation != Orientation.UNKNOWN
-                && status != Status.UNKNOWN
-                && xCoordinate >= 1
-                && xCoordinate <= 100
-                && yCoordinate >= 1
-                && yCoordinate <= 50;
+                && this.orientation != Orientation.UNKNOWN
+                && this.status != Status.UNKNOWN
+                && this.xCoordinate >= 1
+                && this.xCoordinate <= Area.Width
+                && this.yCoordinate >= 1
+                && this.yCoordinate <= Area.Height;
     }
 }

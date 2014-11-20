@@ -18,52 +18,52 @@ public enum Type {
     /**
      * This indicates that the module type is <b>Plain</b>.
      */
-    PLAIN ("Plain", 1, 40, "Plain"),
+    PLAIN ("Plain", 1, 40, "Plain.jpg"),
     
     /**
      * This indicates that the module type is <b>Dormitory</b>.
      */
-    DORMITORY ("Dormitory", 61, 80, "Dormitory"),
+    DORMITORY ("Dormitory", 61, 80, "Dormitory.jpg"),
     
     /**
      * This indicates that the module type is <b>Sanitation</b>.
      */
-    SANITATION ("Sanitation", 91, 100, "Sanitation"),
+    SANITATION ("Sanitation", 91, 100, "Sanitation.jpg"),
     
     /**
      * This indicates that the module type is <b>Food</b>.
      */
-    FOOD ("Food & Water", 111, 120, "Food"),
+    FOOD ("Food & Water", 111, 120, "Food.jpg"),
     
     /**
      * This indicates that the module type is <b>Gym</b>.
      */
-    GYM ("Gym & Relaxation", 131, 134, "Gym"),
+    GYM ("Gym & Relaxation", 131, 134, "Gym.jpg"),
     
     /**
      * This indicates that the module type is <b>Canteen</b>.
      */
-    CANTEEN ("Canteen", 141, 144, "Canteen"),
+    CANTEEN ("Canteen", 141, 144, "Canteen.jpg"),
     
     /**
      * This indicates that the module type is <b>Power</b>.
      */
-    POWER ("Power", 151, 154, "Power"),
+    POWER ("Power", 151, 154, "Power.jpg"),
     
     /**
      * This indicates that the module type is <b>Control</b>.
      */
-    CONTROL ("Control", 161, 164, "Control"),
+    CONTROL ("Control", 161, 164, "Control.jpg"),
     
     /**
      * This indicates that the module type is <b>Airlock</b>.
      */
-    AIRLOCK ("Airlock", 171, 174, "Airlock"),
+    AIRLOCK ("Airlock", 171, 174, "Airlock.jpg"),
     
     /**
      * This indicates that the module type is <b>Medical</b>.
      */
-    MEDICAL ("Medical", 181, 184, "Medical");
+    MEDICAL ("Medical", 181, 184, "Medical.jpg");
     
     /**
      * The name of the module type.
@@ -93,12 +93,12 @@ public enum Type {
      * @param endingId - The highest ID number a module of this type can have
      * @param filename - The name of the image file associated with this module type
      */
-    Type(String typeName, int startingId, int endingId, String filename) {
-        this.typeName = typeName;
-        this.startingId = startingId;
-        this.endingId = endingId;
+    Type(final String typeName_, final int startingId_, final int endingId_, final String filename) {
+        this.typeName = typeName_;
+        this.startingId = startingId_;
+        this.endingId = endingId_;
         if (filename != null) {
-        	this.imageUrl = "images/modules/" + filename + ".jpg";
+            this.imageUrl = "images/modules/" + filename;
         } else {
             this.imageUrl = null;
         }
@@ -113,7 +113,7 @@ public enum Type {
      * @return The name of the type associated with this module
      */
     public String getTypeName() {
-        return typeName;
+        return this.typeName;
     }
     
     /**
@@ -121,7 +121,7 @@ public enum Type {
      * @return The string containing the URL of the image file
      */
     public String getImageUrl() {
-        return imageUrl;
+        return this.imageUrl;
     }
     
     /**
@@ -129,7 +129,7 @@ public enum Type {
      * @param idNumber - The ID number of the module
      * @return The type of module
      */
-    public static Type getFromId(int idNumber) {
+    public static Type getFromId(final int idNumber) {
         for (Type moduleType : Type.values()) {
             if (idNumber >= moduleType.startingId && idNumber <= moduleType.endingId) {
                 return moduleType;
