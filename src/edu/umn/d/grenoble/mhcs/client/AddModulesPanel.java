@@ -95,11 +95,8 @@ public class AddModulesPanel{
                     addModulesPanel.clearPanel();
                     
                 }
-
-                
-                
-
-         }});
+            }
+        });
         
         
         
