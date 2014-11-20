@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Area {
     public final static int Width = 100;
-    public final static int Height = 100;
+    public final static int Height = 50;
     
  /* Initialization */
     
