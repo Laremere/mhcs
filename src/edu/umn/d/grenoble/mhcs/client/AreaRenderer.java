@@ -13,6 +13,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Type;
+import edu.umn.edu.d.grenoble.mhcs.bus.AreaUpdateEvent;
+import edu.umn.edu.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
+import edu.umn.edu.d.grenoble.mhcs.bus.Bus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,9 +72,18 @@ public class AreaRenderer {
         this.canvas.setSize(tileSize * Area.Width + px, tileSize * Area.Height + px);
         this.canvas.setCoordinateSpaceWidth(tileSize * Area.Width);
         this.canvas.setCoordinateSpaceHeight(tileSize * Area.Height);
+        
+        final AreaRenderer areaRenderer = this;
+        Bus.bus.addHandler(AreaUpdateEvent.TYPE, new AreaUpdateEventHandler(){
+            @Override
+            public void onEvent(final AreaUpdateEvent event) {
+                areaRenderer.RenderArea(event.getArea());
+            }
+            
+        });
     }
     
-    public void RenderArea(final Area area) {
+    private void RenderArea(final Area area) {
         Context2d context = this.canvas.getContext2d();
         
         context.setFillStyle("#444444");
