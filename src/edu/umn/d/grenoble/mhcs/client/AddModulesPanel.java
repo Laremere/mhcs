@@ -163,7 +163,21 @@ public class AddModulesPanel{
             @Override
             public void onEvent(final AreaClickEvent event) {
                moduleToEdit = moduleList.occupied(event.getX(), event.getY());
-               
+               coorX.setText(Integer.toString(moduleToEdit.getX()));
+               coorY.setText(Integer.toString(moduleToEdit.getY()));
+               moduleNumber.setText(Integer.toString(moduleToEdit.getId()));
+               for (int i = 0; i < Orientation.values().length; i+= 1){
+                   if(Orientation.values()[i].equals(moduleToEdit.getOrientation())){
+                       orientation.setSelectedIndex(i);
+                       break;
+                   }
+               }
+               for (int i = 0; i < Status.values().length; i += 1){
+                   if(Status.values()[i].equals(moduleToEdit.getStatus())){
+                       condition.setSelectedIndex(i);
+                       break;
+                   }
+               }
             }
             
         });
