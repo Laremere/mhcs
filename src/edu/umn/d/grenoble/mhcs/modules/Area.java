@@ -11,7 +11,9 @@ import java.util.List;
  * @author Paul Rodysill
  */
 public class Area {
-   
+    final static int Width = 100;
+    final static int Height = 100;
+    
  /* Initialization */
     
     /**
@@ -19,11 +21,12 @@ public class Area {
      */
     public List<Module> modules = new ArrayList<Module>();
 
-   public Area(){}
+    public Area(){
+    }
     
-    public Area(Area other) {
+    public Area(final Area other){
         for (Module m : other.modules) {
-            modules.add(new Module(m));
+            this.modules.add(new Module(m));
         }
     }
     
@@ -35,15 +38,15 @@ public class Area {
      * @return the list of modules
      */
     public List<Module> getModules() {
-        return modules;
+        return this.modules;
     }
     
     /**
      * Adds the module to the list of modules.
      * @param module - The new module to add to the list of modules.
      */
-    public void addModule(Module module) {
-        modules.add(module);
+    public void addModule(final Module module) {
+        this.modules.add(module);
     }
     
     /**
@@ -52,8 +55,8 @@ public class Area {
      * @param yCoordinate - The Y-Coordinate of the space in question
      * @return whether or not the space is occupied (True = Occupied, False = Vacant)
      */
-    public boolean occupied(int xCoordinate, int yCoordinate) {
-        for (Module module : modules) {
+    public boolean occupied(final int xCoordinate, final int yCoordinate) {
+        for (Module module : this.modules) {
             if (module.getX() == xCoordinate && module.getY() == yCoordinate) {
                 return true;
             }
