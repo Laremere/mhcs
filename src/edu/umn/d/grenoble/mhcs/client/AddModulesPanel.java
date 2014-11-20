@@ -8,8 +8,11 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
+import edu.umn.d.grenoble.mhcs.modules.Orientation;
+import edu.umn.d.grenoble.mhcs.modules.Status;
 
 
 
@@ -53,13 +56,15 @@ public class AddModulesPanel{
         this.moduleNumber = new TextBox();
         
         this.orientation = new ListBox();
-        this.orientation.addItem("0");
-        this.orientation.addItem("1");
-        this.orientation.addItem("2");
+        for(Orientation o : Orientation.values()){
+            this.orientation.addItem(o.name());
+        }
+
         this.condition = new ListBox();
-        this.condition.addItem("Usable");
-        this.condition.addItem("Usable after repair");
-        this.condition.addItem("Beyond Repair");
+        for(Status s : Status.values()){
+            this.condition.addItem(s.name());
+        }
+
         
         this.thisPanel.setWidget(0, 0, this.coorXLabel);  
         this.thisPanel.setWidget(0, 1, this.coorX);
@@ -82,10 +87,11 @@ public class AddModulesPanel{
                 currentModule.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
                 currentModule.setY(Integer.parseInt(addModulesPanel.coorY.getText()));
 
-                //currentModule.orientation = 
-                //currentModule.condition = 
+                currentModule.setOrientation(Orientation.values()[orientation.getSelectedIndex()]);
+                currentModule.setStatus(Status.values()[condition.getSelectedIndex()]);
                 if(currentModule.isValid()){                    
                     addModulesPanel.moduleList.addModule(currentModule);
+                    
                     Window.alert("Module added" + "\n" + addModulesPanel.moduleList.getModules().size() 
                             + " module(s) have been logged");
                     addModulesPanel.clearPanel();
