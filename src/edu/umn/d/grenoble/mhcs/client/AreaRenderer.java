@@ -3,13 +3,17 @@ package edu.umn.d.grenoble.mhcs.client;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
@@ -68,6 +72,7 @@ public class AreaRenderer {
             return;
         }
         
+        
         final String px = "px";
         this.canvas.setSize(tileSize * Area.Width + px, tileSize * Area.Height + px);
         this.canvas.setCoordinateSpaceWidth(tileSize * Area.Width);
@@ -80,6 +85,16 @@ public class AreaRenderer {
                 areaRenderer.RenderArea(event.getArea());
             }
             
+        });
+        
+        this.canvas.addClickHandler(new ClickHandler(){
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                int x = event.getRelativeX(areaRenderer.canvas.getElement()) / AreaRenderer.tileSize + 1;
+                int y = Area.Height - event.getRelativeY(areaRenderer.canvas.getElement()) / AreaRenderer.tileSize;
+                Bus.bus.fireEvent(new AreaClickEvent(x, y));
+            }
         });
     }
     
