@@ -33,11 +33,11 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         Area area = new Area();
         for (int i = 1; i <= 10; i++) {
             Module module = new Module();
-            module.xposition = i;
-            module.yposition = i;
-            module.id = i;
-            module.orientation = Orientation.Upright;
-            module.status = Status.Good;
+            module.setX(i);
+            module.setY(i);
+            module.setId(i);
+            module.setOrientation(Orientation.UPRIGHT);
+            module.setStatus(Status.GOOD);
             area.addModule(module);
         }
         areaRenderer.RenderArea(area);

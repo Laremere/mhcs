@@ -78,8 +78,8 @@ public class AreaRenderer {
         for (Module module : area.getModules()) {
             context.drawImage(
                     images.get(module.getType().getImageUrl()),
-                    (module.xposition - 1) * tileSize, 
-                    (50 - module.yposition) * tileSize,
+                    (module.getX() - 1) * tileSize, 
+                    (50 - module.getY()) * tileSize,
                     tileSize, tileSize);
         }
         

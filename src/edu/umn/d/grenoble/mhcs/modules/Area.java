@@ -1,5 +1,5 @@
  
-package edu.umn.d.grenoble.modules;
+package edu.umn.d.grenoble.mhcs.modules;
 
 import java.util.ArrayList;
 import java.util.List;

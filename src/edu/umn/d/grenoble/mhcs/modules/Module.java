@@ -1,4 +1,4 @@
-package edu.umn.d.grenoble.modules;
+package edu.umn.d.grenoble.mhcs.modules;
 
 /**
  * The type of module.
@@ -57,6 +57,13 @@ public class Module {
         this.status = status;      
 	}
     
+    public Module(Module other) {
+        this.idNumber = other.idNumber;
+        this.orientation = other.orientation;
+        this.status = other.status;
+        this.xCoordinate = other.xCoordinate;
+        this.yCoordinate = other.xCoordinate;
+    }
     
     
  /* Methods */
@@ -98,7 +105,7 @@ public class Module {
      * @return The type of module
      */ 
     public Type getType() {
-        return Type.getFromId(this.id);
+        return Type.getFromId(this.idNumber);
     }
     
     /**

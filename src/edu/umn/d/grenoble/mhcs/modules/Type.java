@@ -1,4 +1,4 @@
-package edu.umn.d.grenoble.modules;
+package edu.umn.d.grenoble.mhcs.modules;
 
 /**
  * The type of module.
@@ -99,6 +99,8 @@ public enum Type {
         this.endingId = endingId;
         if (filename != null) {
         	this.imageUrl = "images/modules/" + filename + ".jpg";
+        } else {
+            this.imageUrl = null;
         }
     }
     
@@ -127,7 +129,7 @@ public enum Type {
      * @param idNumber - The ID number of the module
      * @return The type of module
      */
-    public static Type getFrom(int idNumber) {
+    public static Type getFromId(int idNumber) {
         for (Type moduleType : Type.values()) {
             if (idNumber >= moduleType.startingId && idNumber <= moduleType.endingId) {
                 return moduleType;

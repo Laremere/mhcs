@@ -80,9 +80,9 @@ public class AddModulesPanel{
         submitButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 Module currentModule = new Module();
-                currentModule.id = Integer.parseInt(moduleNumber.getText());
-                currentModule.xposition = Integer.parseInt(coorX.getText());
-                currentModule.yposition = Integer.parseInt(coorY.getText());
+                currentModule.setId(Integer.parseInt(moduleNumber.getText()));
+                currentModule.setX(Integer.parseInt(coorX.getText()));
+                currentModule.setY(Integer.parseInt(coorY.getText()));
 
                 //currentModule.orientation = 
                 //currentModule.condition = 
