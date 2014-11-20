@@ -11,14 +11,16 @@ public enum Status {
  /* Initialization */
     
     /**
+     * This indicates that the module's status is unknown.
+     */
+    UNKNOWN ("The module's status is currently unknown."),
+    
+    /**
      * This indicates that the module's status is good.
      */
     GOOD ("The module's status is good."),
     
-    /**
-     * This indicates that the module's status is unknown.
-     */
-    UNKNOWN ("The module's status is currently unknown."),
+
     
     /**
      * This indicates that the module is damaged but can still be repaired.
