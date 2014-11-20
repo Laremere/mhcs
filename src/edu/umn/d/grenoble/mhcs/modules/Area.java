@@ -54,13 +54,13 @@ public class Area {
      * @param yCoordinate - The Y-Coordinate of the space in question
      * @return whether or not the space is occupied (True = Occupied, False = Vacant)
      */
-    public boolean occupied(final int xCoordinate, final int yCoordinate) {
+    public Module occupied(final int xCoordinate, final int yCoordinate) {
         for (Module module : this.modules) {
             if (module.getX() == xCoordinate && module.getY() == yCoordinate) {
-                return true;
+                return module;
             }
         }
-        return false;
+        return null;
     }
 
 }
