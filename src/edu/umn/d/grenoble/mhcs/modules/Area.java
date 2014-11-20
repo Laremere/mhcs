@@ -1,4 +1,3 @@
- 
 package edu.umn.d.grenoble.mhcs.modules;
 
 import java.util.ArrayList;
