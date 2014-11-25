@@ -86,13 +86,15 @@ public class AddModulesPanel {
                 final String MODULE_ADDED = "Module added \n";
                 final String MODULES_LOGGED = " module(s) have been logged";
                 
-                if ( moduleToEdit == null ) {
+                if ( addModulesPanel.moduleToEdit == null ) {
                     Module currentModule = new Module();
                     currentModule.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
                     currentModule.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
                     currentModule.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
-                    currentModule.setOrientation( Orientation.values()[ orientation.getSelectedIndex() ] );
-                    currentModule.setStatus( Status.values()[ condition.getSelectedIndex() ] );
+                    currentModule.setOrientation( Orientation.values()[ 
+                        addModulesPanel.orientation.getSelectedIndex() ] );
+                    currentModule.setStatus( Status.values()[ 
+                        addModulesPanel.condition.getSelectedIndex() ] );
                     if ( currentModule.isValid() ) {                    
                         addModulesPanel.moduleList.addModule(currentModule);
                         Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
@@ -105,12 +107,14 @@ public class AddModulesPanel {
                     }                    
                 }
                 else {
-                    moduleToEdit.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
-                    moduleToEdit.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
-                    moduleToEdit.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
-                    moduleToEdit.setOrientation( Orientation.values()[ orientation.getSelectedIndex() ] );
-                    moduleToEdit.setStatus( Status.values()[ condition.getSelectedIndex() ] );
-                    if ( moduleToEdit.isValid() ) {                        
+                    addModulesPanel.moduleToEdit.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
+                    addModulesPanel.moduleToEdit.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
+                    addModulesPanel.moduleToEdit.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
+                    addModulesPanel.moduleToEdit.setOrientation( Orientation.values()[ 
+                        addModulesPanel.orientation.getSelectedIndex() ] );
+                    addModulesPanel.moduleToEdit.setStatus( Status.values()[ 
+                        addModulesPanel.condition.getSelectedIndex() ] );
+                    if ( addModulesPanel.moduleToEdit.isValid() ) {                        
                         Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
                         Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
@@ -134,20 +138,20 @@ public class AddModulesPanel {
             @Override
             public void onEvent(final AreaClickEvent event) {
                 
-                moduleToEdit = moduleList.occupied( event.getX(), event.getY() );
-                coorX.setText( Integer.toString( moduleToEdit.getX() ) );
-                coorY.setText( Integer.toString( moduleToEdit.getY() ) );
-                moduleNumber.setText( Integer.toString( moduleToEdit.getId() ) );
+                addModulesPanel.moduleToEdit = addModulesPanel.moduleList.occupied( event.getX(), event.getY() );
+                addModulesPanel.coorX.setText( Integer.toString( addModulesPanel.moduleToEdit.getX() ) );
+                addModulesPanel.coorY.setText( Integer.toString( addModulesPanel.moduleToEdit.getY() ) );
+                addModulesPanel.moduleNumber.setText( Integer.toString( addModulesPanel.moduleToEdit.getId() ) );
                 
                 for (int i = 0; i < Orientation.values().length; i += 1) {
-                    if ( Orientation.values()[i].equals( moduleToEdit.getOrientation() ) ) {
-                        orientation.setSelectedIndex(i);
+                    if ( Orientation.values()[i].equals( addModulesPanel.moduleToEdit.getOrientation() ) ) {
+                        addModulesPanel.orientation.setSelectedIndex(i);
                         break;
                     }
                 }
                 for ( int i = 0; i < Status.values().length; i += 1 ) {
-                    if ( Status.values()[i].equals( moduleToEdit.getStatus() ) ) {
-                        condition.setSelectedIndex(i);
+                    if ( Status.values()[i].equals( addModulesPanel.moduleToEdit.getStatus() ) ) {
+                        addModulesPanel.condition.setSelectedIndex(i);
                         break;
                     }
                 }
