@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
-
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
@@ -19,11 +18,7 @@ import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Orientation;
 import edu.umn.d.grenoble.mhcs.modules.Status;
 
-
-
-
-
-public class AddModulesPanel{
+public class AddModulesPanel {
 
     private Area moduleList;
     private FlexTable thisPanel;
@@ -42,6 +37,7 @@ public class AddModulesPanel{
     private Module moduleToEdit;
     
     public AddModulesPanel() {
+        
         this.moduleList = new Area();
         this.thisPanel = new FlexTable();
         
@@ -49,13 +45,10 @@ public class AddModulesPanel{
         this.cancelButton = new Button("Cancel/Clear");
         
         this.coorXLabel = new Label("X Position:");
-        this.coorXLabel.setVisible(true);
         this.coorYLabel = new Label("Y Position:");
         this.moduleNumberLabel = new Label("ID Number:");
         this.conditionLabel = new Label("Module Condition:");
         this.orientationLabel = new Label("Orientation:");
-        new Label("   ");
-
         
         this.coorX = new TextBox();
         this.coorY = new TextBox();
@@ -70,7 +63,6 @@ public class AddModulesPanel{
         for(Status s : Status.values()){
             this.condition.addItem(s.name());
         }
-
         
         this.thisPanel.setWidget(0, 0, this.coorXLabel);  
         this.thisPanel.setWidget(0, 1, this.coorX);
@@ -86,120 +78,92 @@ public class AddModulesPanel{
         this.thisPanel.setWidget(1, 9, this.cancelButton);
         
         final AddModulesPanel addModulesPanel = this;
+        
         this.submitButton.addClickHandler(new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                if(moduleToEdit == null){
+                
+                final String INVALID = "Invalid entry";
+                final String MODULE_ADDED = "Module added \n";
+                final String MODULES_LOGGED = " module(s) have been logged";
+                
+                if ( moduleToEdit == null ) {
                     Module currentModule = new Module();
-                    currentModule.setId(Integer.parseInt(addModulesPanel.moduleNumber.getText()));
-                    currentModule.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
-                    currentModule.setY(Integer.parseInt(addModulesPanel.coorY.getText()));
-
-                    currentModule.setOrientation(Orientation.values()[orientation.getSelectedIndex()]);
-                    currentModule.setStatus(Status.values()[condition.getSelectedIndex()]);
-                    if(currentModule.isValid()){                    
+                    currentModule.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
+                    currentModule.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
+                    currentModule.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
+                    currentModule.setOrientation( Orientation.values()[ orientation.getSelectedIndex() ] );
+                    currentModule.setStatus( Status.values()[ condition.getSelectedIndex() ] );
+                    if ( currentModule.isValid() ) {                    
                         addModulesPanel.moduleList.addModule(currentModule);
-                        Bus.bus.fireEvent(new AreaUpdateEvent(addModulesPanel.moduleList));
-                        Window.alert("Module added" + "\n" + addModulesPanel.moduleList.getModules().size() 
-                                + " module(s) have been logged");
+                        Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
+                        Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
+                                + MODULES_LOGGED );
                         addModulesPanel.clearPanel();
                     }
-                    else{
-                        Window.alert("Invalid entry");
+                    else {
+                        Window.alert(INVALID);
                     }                    
                 }
-                else{
-                    moduleToEdit.setId(Integer.parseInt(addModulesPanel.moduleNumber.getText()));
-                    moduleToEdit.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
-                    moduleToEdit.setY(Integer.parseInt(addModulesPanel.coorY.getText()));
-                    moduleToEdit.setOrientation(Orientation.values()[orientation.getSelectedIndex()]);
-                    moduleToEdit.setStatus(Status.values()[condition.getSelectedIndex()]);
-                    if(moduleToEdit.isValid()){                    
-                        
-                        Bus.bus.fireEvent(new AreaUpdateEvent(addModulesPanel.moduleList));
-                        Window.alert("Module added" + "\n" + addModulesPanel.moduleList.getModules().size() 
-                                + " module(s) have been logged");
+                else {
+                    moduleToEdit.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
+                    moduleToEdit.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
+                    moduleToEdit.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
+                    moduleToEdit.setOrientation( Orientation.values()[ orientation.getSelectedIndex() ] );
+                    moduleToEdit.setStatus( Status.values()[ condition.getSelectedIndex() ] );
+                    if ( moduleToEdit.isValid() ) {                        
+                        Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
+                        Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
+                                + MODULES_LOGGED );
                         addModulesPanel.clearPanel();
                     }
-                    else{
-                        Window.alert("Invalid entry");
+                    else {
+                        Window.alert(INVALID);
                     }                         
-
                 }
-                
-                
-                
-                
-                /**
-                Module currentModule = new Module();
-                currentModule.setId(Integer.parseInt(addModulesPanel.moduleNumber.getText()));
-                currentModule.setX(Integer.parseInt(addModulesPanel.coorX.getText()));
-                currentModule.setY(Integer.parseInt(addModulesPanel.coorY.getText()));
-
-                currentModule.setOrientation(Orientation.values()[orientation.getSelectedIndex()]);
-                currentModule.setStatus(Status.values()[condition.getSelectedIndex()]);
-                if(currentModule.isValid()){                    
-                    addModulesPanel.moduleList.addModule(currentModule);
-                    Bus.bus.fireEvent(new AreaUpdateEvent(addModulesPanel.moduleList));
-                    Window.alert("Module added" + "\n" + addModulesPanel.moduleList.getModules().size() 
-                            + " module(s) have been logged");
-                    addModulesPanel.clearPanel();
-                }
-                else{
-                    Window.alert("Invalid entry");
-                }
-                */
             }
         });
-        
-        
-        
-        this.cancelButton.addClickHandler(new ClickHandler() {
+          
+        this.cancelButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 addModulesPanel.clearPanel();
             }
         });
         
-        Bus.bus.addHandler(AreaClickEvent.TYPE, new AreaClickEventHandler(){
+        Bus.bus.addHandler(AreaClickEvent.TYPE, new AreaClickEventHandler() {
+            
             @Override
             public void onEvent(final AreaClickEvent event) {
-               moduleToEdit = moduleList.occupied(event.getX(), event.getY());
-               coorX.setText(Integer.toString(moduleToEdit.getX()));
-               coorY.setText(Integer.toString(moduleToEdit.getY()));
-               moduleNumber.setText(Integer.toString(moduleToEdit.getId()));
-               for (int i = 0; i < Orientation.values().length; i+= 1){
-                   if(Orientation.values()[i].equals(moduleToEdit.getOrientation())){
-                       orientation.setSelectedIndex(i);
-                       break;
-                   }
-               }
-               for (int i = 0; i < Status.values().length; i += 1){
-                   if(Status.values()[i].equals(moduleToEdit.getStatus())){
-                       condition.setSelectedIndex(i);
-                       break;
-                   }
-               }
-            }
-            
-        });
-               
-        
-        
+                
+                moduleToEdit = moduleList.occupied( event.getX(), event.getY() );
+                coorX.setText( Integer.toString( moduleToEdit.getX() ) );
+                coorY.setText( Integer.toString( moduleToEdit.getY() ) );
+                moduleNumber.setText( Integer.toString( moduleToEdit.getId() ) );
+                
+                for (int i = 0; i < Orientation.values().length; i += 1) {
+                    if ( Orientation.values()[i].equals( moduleToEdit.getOrientation() ) ) {
+                        orientation.setSelectedIndex(i);
+                        break;
+                    }
+                }
+                for ( int i = 0; i < Status.values().length; i += 1 ) {
+                    if ( Status.values()[i].equals( moduleToEdit.getStatus() ) ) {
+                        condition.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }     
+        });                    
     }
     
-    public void clearPanel(){
-        
+    public void clearPanel() {       
         this.coorX.setText(null);
         this.coorY.setText(null);
         this.moduleNumber.setText(null);
         this.orientation.setSelectedIndex(0);
-        this.condition.setSelectedIndex(0);
-        
-    }
-    
+        this.condition.setSelectedIndex(0);  
+    }  
     
     public FlexTable getAddModulesPanel() {
         return this.thisPanel;
     }
-    
-
 }

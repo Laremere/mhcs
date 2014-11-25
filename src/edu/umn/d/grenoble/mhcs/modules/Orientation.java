@@ -43,8 +43,8 @@ public enum Orientation {
     /**
      * Constructor - Associates the module's status with its description and
      * the number of flips required to make the module upright.
-     * @param description - The description of the module's status 
-     * @param flipsNeeded - The number of flips required for the module to be upright
+     * @param description_ - The description of the module's status 
+     * @param flipsNeeded_ - The number of flips required for the module to be upright
      */
     private Orientation(final String description_, final int flipsNeeded_) {
         this.description = description_;

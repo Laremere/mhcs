@@ -42,11 +42,11 @@ public class Module {
     
     /**
      * Complete Constructor.
-     * @param idNumber - The ID number of the module
-     * @param xCoordinate - The module's X-Coordinate
-     * @param yCoordinate - The module's Y-Coordinate
-     * @param orientation - The orientation of the module
-     * @param status - The status of the module
+     * @param idNumber_ - The ID number of the module
+     * @param xCoordinate_ - The module's X-Coordinate
+     * @param yCoordinate_ - The module's Y-Coordinate
+     * @param orientation_ - The orientation of the module
+     * @param status_ - The status of the module
      */
     public Module(final int idNumber_, final int xCoordinate_, final int yCoordinate_, 
                   final Orientation orientation_, final Status status_) {

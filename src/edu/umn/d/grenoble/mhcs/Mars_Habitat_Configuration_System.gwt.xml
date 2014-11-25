@@ -17,7 +17,6 @@
 
   <!-- Inherit the JSONParser                                     -->
   <inherits name="com.google.gwt.json.JSON"/>
-  
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='edu.umn.d.grenoble.mhcs.client.MarsHabitatConfigurationSystem'/>

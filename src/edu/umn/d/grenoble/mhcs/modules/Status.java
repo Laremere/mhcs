@@ -20,8 +20,6 @@ public enum Status {
      */
     GOOD ("The module's status is good."),
     
-
-    
     /**
      * This indicates that the module is damaged but can still be repaired.
      */
@@ -39,7 +37,7 @@ public enum Status {
     
     /**
      * Constructor - Associates the module's status with its description.
-     * @param description - The description of the module's status 
+     * @param description_ - The description of the module's status 
      */
     private Status(final String description_) {
         this.description = description_;
