@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
-import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -102,11 +101,8 @@ public class AddModulesPanel {
                                 + MODULES_LOGGED );
                         addModulesPanel.clearPanel();
                     }
-                    else {
-                        Window.alert(INVALID);
-                    }                    
-                }
-                else {
+                    else { Window.alert(INVALID); }                    
+                } else {
                     addModulesPanel.moduleToEdit.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
                     addModulesPanel.moduleToEdit.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
                     addModulesPanel.moduleToEdit.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
@@ -119,10 +115,7 @@ public class AddModulesPanel {
                         Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
                         addModulesPanel.clearPanel();
-                    }
-                    else {
-                        Window.alert(INVALID);
-                    }                         
+                    } else { Window.alert(INVALID); }                         
                 }
             }
         });
