@@ -32,3 +32,13 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.weatherPanel {
+	background-image: url(images/WeatherPanelBackground.jpg);
+	background-repeat: no-repeat;
+	font-size: 16pt;
+	font-weight: bold;
+	height: 300;
+	width: 207;
+
+}

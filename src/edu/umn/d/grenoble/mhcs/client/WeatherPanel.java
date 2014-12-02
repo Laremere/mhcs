@@ -7,7 +7,8 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 /**
@@ -21,7 +22,11 @@ public class WeatherPanel {
  /* Initialization */
     
     private final JsonpRequestBuilder jsonp;
-    private FlexTable weatherTable;
+    private FlowPanel weatherTable;
+    private String visString;
+    private String tempString;
+    private Image wunderLogo;
+    private Label weatherHeader;
   
     /**
      * The WeatherPanel Constructor.
@@ -46,9 +51,16 @@ public class WeatherPanel {
             }     
         });
         
-        this.weatherTable = new FlexTable();
-        this.weatherTable.setWidget(0, 0, new Label("Visibility (Km): ") );
-        this.weatherTable.setWidget(1, 0, new Label("Temperature (C): ") );
+        this.weatherTable = new FlowPanel();
+        this.weatherTable.setStyleName("weatherPanel");
+        this.visString = new String("Visibility: ");
+        this.tempString = new String("Temperature:  ");
+        
+        this.wunderLogo = new Image();
+        this.wunderLogo.setUrl("images/WunderGroundLogo.jpg");
+        
+        this.weatherHeader = new Label("Weather Conditions:");
+
     }
     
  /* Methods */
@@ -56,7 +68,7 @@ public class WeatherPanel {
     /**
      * Getter (Accessor) for the weather panel.
      */
-    public FlexTable getWeatherPanel() {
+    public FlowPanel getWeatherPanel() {
         return this.weatherTable;
     }
     
@@ -74,8 +86,11 @@ public class WeatherPanel {
         String stringTemp = conditions.get("temp_c").toString();
         String stringVis = conditions.get("visibility_km").toString();
         
-        this.weatherTable.setWidget(0, 1, new Label(stringTemp));
-        this.weatherTable.setWidget(1, 1, new Label(stringVis));     
+        this.weatherTable.add(this.weatherHeader);
+        this.weatherTable.add(new Label(this.tempString + "  " + stringTemp + " Degrees C"));
+        this.weatherTable.add(new Label(this.visString + " " + stringVis + " Km"));
+        this.weatherTable.add(this.wunderLogo);
+  
     }
     
 }
