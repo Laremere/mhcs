@@ -16,6 +16,7 @@ import edu.umn.d.grenoble.mhcs.modules.Area;
 public class MarsHabitatConfigurationSystem implements EntryPoint {
     AreaRenderer areaRenderer;
     WeatherPanel weather;
+    SoundOutput soundOutput;
     
     public MarsHabitatConfigurationSystem(){
     }
@@ -26,6 +27,9 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     public void onModuleLoad() {
         this.areaRenderer = new AreaRenderer(this);
         weather = new WeatherPanel();
+        soundOutput = new SoundOutput();
+        
+        RootPanel.get().add(soundOutput.getMuteButton());
         
      
     }

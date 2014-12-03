@@ -100,9 +100,9 @@ public class Module {
     public void setX(final int newX) { this.xCoordinate = newX; }
     public void setX(final double newX) { this.xCoordinate = (int) newX; }
     public void setX(final JSONNumber newX) { this.xCoordinate = (int) newX.doubleValue(); }
-    public void setY(final int newY) { this.xCoordinate = newY; }
-    public void setY(final double newY) { this.xCoordinate = (int) newY; }
-    public void setY(final JSONNumber newY) { this.xCoordinate = (int) newY.doubleValue(); }
+    public void setY(final int newY) { this.yCoordinate = newY; }
+    public void setY(final double newY) { this.yCoordinate = (int) newY; }
+    public void setY(final JSONNumber newY) { this.yCoordinate = (int) newY.doubleValue(); }
     public void setOrientation(final Orientation newOrientation) { this.orientation = newOrientation; }
     public void setOrientation(final int numberOfFlips) { 
         if (numberOfFlips == 0) {  

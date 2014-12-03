@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.Label;
 
 /**
  * The panel that displays the current weather status from wunderground
- * @author Scott Redig
+ *
  * @author Justin Pieper
- * @author Paul Rodysill
+ *
  */
 public class WeatherPanel {
     
