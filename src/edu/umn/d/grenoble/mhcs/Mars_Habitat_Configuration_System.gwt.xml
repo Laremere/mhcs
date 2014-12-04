@@ -17,6 +17,7 @@
 
   <!-- Inherit the JSONParser                                     -->
   <inherits name="com.google.gwt.json.JSON"/>
+  <inherits name='com.google.gwt.http.HTTP'/>
   
   <!-- Inherit sound support -->
   <inherits name='com.allen_sauer.gwt.voices.gwt-voices'/>

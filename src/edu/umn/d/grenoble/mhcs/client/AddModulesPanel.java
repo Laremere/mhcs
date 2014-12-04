@@ -2,6 +2,12 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -29,8 +35,10 @@ public class AddModulesPanel {
     private Button cancelButton;
     private Button loadButton;
     private Button saveButton;
+    private Button testCaseButton;
     private TextBox coorX;
     private TextBox coorY; 
+    private TextBox testCaseText;
     private TextBox moduleNumber;
     private Label coorXLabel; 
     private Label coorYLabel;
@@ -56,6 +64,9 @@ public class AddModulesPanel {
         this.moduleNumberLabel = new Label("ID Number:");
         this.conditionLabel = new Label("Module Condition:");
         this.orientationLabel = new Label("Orientation:");
+        
+        testCaseButton = new Button("Load a test case");
+        testCaseText = new TextBox();
         
         this.coorX = new TextBox();
         this.coorY = new TextBox();
@@ -85,6 +96,8 @@ public class AddModulesPanel {
         this.thisPanel.setWidget(1, 9, this.cancelButton);
         this.thisPanel.setWidget(0, 11, this.loadButton);
         this.thisPanel.setWidget(0, 12, this.saveButton);
+        this.thisPanel.setWidget(1, 11, this.testCaseButton);
+        this.thisPanel.setWidget(1, 12, this.testCaseText);
         
         final AddModulesPanel addModulesPanel = this;
         
@@ -192,7 +205,49 @@ public class AddModulesPanel {
                     }
                 }
             }     
-        });                    
+        });
+        
+        this.testCaseButton.addClickHandler( new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                
+                String proxy = "http://www.d.umn.edu/~piepe058/war/Proxy.php?url=";
+                String url = proxy +  "http://www.d.umn.edu/~abrooks/SomeTests.php?q=" + testCaseText.getText();
+                url = URL.encode(url);
+                
+                RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+                
+                try{
+                    Request request = builder.sendRequest(null, new RequestCallback(){
+                        public void onError(Request request, Throwable Exception) {
+                            Window.alert("onError");
+                        }
+                        
+                        public void onResponseReceived(Request request, Response response){
+                            if(200 == response.getStatusCode()){
+                                String rt = response.getText();
+                                update(rt);
+                            }
+                            else{
+                                Window.alert("Couldn't retreive JSON: " + response.getStatusText());
+                            }
+                        }
+                    });
+
+                    
+                }
+                catch (Exception e){
+                    Window.alert("RequestException: Could not retreive JSON");
+                }
+            }
+        });
+        
+    }
+    
+    public void update(String rt) {
+        String stringAll = rt;
+        moduleList = new Area(stringAll);
+        Bus.bus.fireEvent( new AreaUpdateEvent(this.moduleList) );
+        
     }
     
     public void clearPanel() {       
