@@ -26,6 +26,7 @@ public class AddModulesPanel {
     private Button submitButton;
     private Button cancelButton;
     private Button loadButton;
+    private Button saveButton;
     private TextBox coorX;
     private TextBox coorY; 
     private TextBox moduleNumber;
@@ -47,6 +48,7 @@ public class AddModulesPanel {
         this.submitButton = new Button("Submit");
         this.cancelButton = new Button("Cancel/Clear");
         this.loadButton = new Button("Load");
+        this.saveButton = new Button("Save");
         
         this.coorXLabel = new Label("X Position:");
         this.coorYLabel = new Label("Y Position:");
@@ -81,6 +83,7 @@ public class AddModulesPanel {
         this.thisPanel.setWidget(1, 4, this.orientation);
         this.thisPanel.setWidget(1, 9, this.cancelButton);
         this.thisPanel.setWidget(0, 11, this.loadButton);
+        this.thisPanel.setWidget(0, 12, this.saveButton);
         
         final AddModulesPanel addModulesPanel = this;
         
@@ -145,6 +148,20 @@ public class AddModulesPanel {
                 String sConfigOne = moduleStore.getItem("config1");
                 
                 moduleList = new Area(sConfigOne);
+                Window.alert("yay?");
+                
+            }
+        });
+        
+        this.saveButton.addClickHandler( new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                moduleStore = Storage.getLocalStorageIfSupported();
+                
+                if(moduleStore == null) {
+                    Window.alert("Local Storage not supported");
+                }
+                
+                moduleStore.setItem("config1", moduleList.toJsonString());
                 
             }
         });
