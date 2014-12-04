@@ -57,6 +57,10 @@ public enum Status {
         return this.description;
     }
     
+    public String getJsonName(){
+        return this.jsonName;
+    }
+    
     public static Status getFromString(final String statusString){
         for (Status s : Status.values()){
             if(s.jsonName.equals(statusString)){
