@@ -14,6 +14,7 @@ import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
+import edu.umn.d.grenoble.mhcs.bus.SoundEvent;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Orientation;
@@ -106,6 +107,7 @@ public class AddModulesPanel {
                     if ( currentModule.isValid() ) {                    
                         addModulesPanel.moduleList.addModule(currentModule);
                         Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
+                        Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleAdded) );
                         Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
                         addModulesPanel.clearPanel();

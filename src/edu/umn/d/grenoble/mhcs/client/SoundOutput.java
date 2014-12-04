@@ -5,9 +5,9 @@ import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ToggleButton;
 
-import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
-import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
+import edu.umn.d.grenoble.mhcs.bus.SoundEvent;
+import edu.umn.d.grenoble.mhcs.bus.SoundEventHandler;
 
 /**
  * Class that creates and plays sound output objects.
@@ -15,9 +15,9 @@ import edu.umn.d.grenoble.mhcs.bus.Bus;
  *
  */
 public class SoundOutput {
+    private static SoundController controller = new SoundController();
+    
     private ToggleButton muteButton;
-    private SoundController controller;
-    private Sound moduleAddedSound;
     private Image muteIcon;
 
     
@@ -28,23 +28,18 @@ public class SoundOutput {
         this.muteIcon = new Image();
         this.muteIcon.setUrl("images/MuteImage.jpg");
         
-        this.muteButton = new ToggleButton(muteIcon);
+        this.muteButton = new ToggleButton(this.muteIcon);
         this.muteButton.addStyleName("muteButton");
         this.muteButton.setPixelSize(45, 35);
         
-
-        
-        this.controller = new SoundController();
-        this.moduleAddedSound = this.controller.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, "audio/ModulesAdded.mp3");            
-        
         final SoundOutput soundOutput = this;
-        Bus.bus.addHandler(AreaUpdateEvent.TYPE, new AreaUpdateEventHandler(){
+        Bus.bus.addHandler(SoundEvent.TYPE, new SoundEventHandler(){
             @Override
-            public void onEvent(final AreaUpdateEvent event) {
+            public void onEvent(final SoundEvent event) {
                 if(soundOutput.muteButton.isDown()){
                     
                 } else {
-                soundOutput.moduleAddedSound.play();
+                    event.getSound().play();
                 }
             }            
         });
@@ -52,5 +47,20 @@ public class SoundOutput {
     
     public ToggleButton getMuteButton() {
         return this.muteButton;
+    }
+    
+    public enum Sounds{
+        ModuleAdded("audio/ModulesAdded.mp3");
+     
+        private Sound sound;
+        
+        private Sounds(final String url){
+            this.sound = SoundOutput.controller.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, url);
+        }
+        
+        void play(){
+            this.sound.play();
+        }
+        
     }
 }
