@@ -151,8 +151,8 @@ public class AddModulesPanel {
                 String sConfigOne = moduleStore.getItem(moduleSaveName);
                 moduleList = new Area(sConfigOne);
 
-                Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
                 Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleLoaded) );
+                Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
             }
         });
         

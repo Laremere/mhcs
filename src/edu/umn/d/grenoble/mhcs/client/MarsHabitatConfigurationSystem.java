@@ -31,6 +31,9 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         
         RootPanel.get().add(soundOutput.getMuteButton());
         
+        //Trigger initialization of sounds, so they load before
+        //they are used.
+        SoundOutput.Sounds.values();
      
     }
     

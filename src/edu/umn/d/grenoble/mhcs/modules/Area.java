@@ -103,7 +103,13 @@ public class Area {
     public String toJsonString(){
         StringBuilder builder = new StringBuilder();
         builder.append("[");
+        boolean first = true;
         for (Module m : this.getModules()){
+            if (first){
+                first = false;
+            } else {
+                builder.append(",");
+            }
             builder.append("{");
             builder.append("\"code\":");
             builder.append(m.getId());
