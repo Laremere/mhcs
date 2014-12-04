@@ -61,7 +61,7 @@ public class Area {
             JSONObject jsonModule = (JSONObject) jsonArray.get(i);
             loadedModule.setId((int) ((JSONNumber) jsonModule.get("code")).doubleValue());
             loadedModule.setStatus(Status.getFromString(
-                    ((JSONString) jsonModule.get("status")).toString()));
+                    ((JSONString) jsonModule.get("status")).stringValue()));
             loadedModule.setOrientation(Orientation.getFromFlips(
                     (int) ((JSONNumber) jsonModule.get("turns")).doubleValue()));
             loadedModule.setX((int) ((JSONNumber) jsonModule.get("X")).doubleValue());
@@ -108,9 +108,9 @@ public class Area {
             builder.append("{");
             builder.append("\"code\":");
             builder.append(m.getId());
-            builder.append(",\"status\":");
+            builder.append(",\"status\":\"");
             builder.append(m.getStatus().getJsonName());
-            builder.append(",\"turns\":");
+            builder.append("\",\"turns\":");
             builder.append(m.getOrientation().getFlipsNeeded());
             builder.append(",\"X\":");
             builder.append(m.getX());

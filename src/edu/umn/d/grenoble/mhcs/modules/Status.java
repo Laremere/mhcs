@@ -1,5 +1,7 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * The status of the module.
  * @author Scott Redig
@@ -62,6 +64,7 @@ public enum Status {
     }
     
     public static Status getFromString(final String statusString){
+        Window.alert(">>>"+statusString+"<<<");
         for (Status s : Status.values()){
             if(s.jsonName.equals(statusString)){
                 return s;

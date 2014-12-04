@@ -20,7 +20,8 @@ import edu.umn.d.grenoble.mhcs.modules.Orientation;
 import edu.umn.d.grenoble.mhcs.modules.Status;
 
 public class AddModulesPanel {
-
+    private static final String moduleSaveName = "grenoble_module_list";
+    
     private Area moduleList;
     private FlexTable thisPanel;
     private Button submitButton;
@@ -38,7 +39,6 @@ public class AddModulesPanel {
     private Label orientationLabel;
     private Label conditionLabel;
     private Module moduleToEdit;
-    private Storage moduleStore;
     
     public AddModulesPanel() {
         
@@ -139,29 +139,25 @@ public class AddModulesPanel {
         
         this.loadButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                moduleStore = Storage.getLocalStorageIfSupported();
-                
+                Storage moduleStore = Storage.getLocalStorageIfSupported();
                 if(moduleStore == null) {
                     Window.alert("Local Storage not supported");
                 }
                 
-                String sConfigOne = moduleStore.getItem("config1");
-                
+                String sConfigOne = moduleStore.getItem(moduleSaveName);
                 moduleList = new Area(sConfigOne);
-                Window.alert("yay?");
-                
+                Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
             }
         });
         
         this.saveButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                moduleStore = Storage.getLocalStorageIfSupported();
-                
+                Storage moduleStore = Storage.getLocalStorageIfSupported();
                 if(moduleStore == null) {
-                    Window.alert("Local Storage not supported");
+                    Window.alert("Local Storage not supported!");
                 }
                 
-                moduleStore.setItem("config1", moduleList.toJsonString());
+                moduleStore.setItem(moduleSaveName, moduleList.toJsonString());
                 
             }
         });
