@@ -66,7 +66,6 @@ public class Area {
                     (int) ((JSONNumber) jsonModule.get("turns")).doubleValue()));
             loadedModule.setX((int) ((JSONNumber) jsonModule.get("X")).doubleValue());
             loadedModule.setY((int) ((JSONNumber) jsonModule.get("Y")).doubleValue());
-            
             this.addModule(loadedModule);
         }
     }

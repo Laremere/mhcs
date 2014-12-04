@@ -123,10 +123,12 @@ public class AddModulesPanel {
                         addModulesPanel.condition.getSelectedIndex() ] );
                     if ( addModulesPanel.moduleToEdit.isValid() ) {                        
                         Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
+                        Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleEdited) );
                         Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
                         addModulesPanel.clearPanel();
-                    } else { Window.alert(INVALID); }                         
+                    } else { Window.alert(INVALID); }      
+                    moduleToEdit = null;
                 }
             }
         });
@@ -148,7 +150,9 @@ public class AddModulesPanel {
                 
                 String sConfigOne = moduleStore.getItem(moduleSaveName);
                 moduleList = new Area(sConfigOne);
+
                 Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
+                Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleLoaded) );
             }
         });
         
@@ -160,6 +164,7 @@ public class AddModulesPanel {
                 }
                 
                 moduleStore.setItem(moduleSaveName, moduleList.toJsonString());
+                Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleSaved) );
                 
             }
         });

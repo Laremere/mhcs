@@ -50,7 +50,13 @@ public class SoundOutput {
     }
     
     public enum Sounds{
-        ModuleAdded("audio/ModulesAdded.mp3");
+        ModuleAdded("audio/ModulesAdded.mp3"),
+        
+        ModuleSaved("audio/ModulesSaved.mp3"),
+        
+        ModuleLoaded("audio/ModulesLoaded.mp3"),
+        
+        ModuleEdited("audio/ModuleEdited.mp3");
      
         private Sound sound;
         
