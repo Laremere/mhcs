@@ -1,7 +1,5 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
-import com.google.gwt.user.client.Window;
-
 /**
  * The module and information pertaining to it such as coordinates, 
  * status, type and orientation.
@@ -37,12 +35,6 @@ public class Module {
      * The <b>status</b> of the module.
      */
     private Status status = Status.UNKNOWN;
-    
- /* CheckStyle Strings */
-    
-    private final String newLine = "\n";
-    private final String unknown = "UNKNOWN";
-    private final String defaultUnknown = "Module orientation set to \"Unknown\"";
    
  /* Constructors */
     
@@ -113,16 +105,5 @@ public class Module {
                 && this.xCoordinate <= Area.Width
                 && this.yCoordinate >= 1
                 && this.yCoordinate <= Area.Height;
-    }
-    
-    /**
-     * Takes in a string and removes leading and trailing spaces, 
-     * converts spaces to underscores and capitalizes each letter.
-     * @param dirtyString - The string that needs to be cleaned up
-     * @return The correctly formatted string
-     */
-    private String cleanString(final String dirtyString) {
-        String cleanString = dirtyString.trim().replaceAll(" ", "_").toUpperCase();
-        return cleanString;
     }
 }

@@ -1,7 +1,5 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
-import com.google.gwt.user.client.Window;
-
 /**
  * The orientation of the module.
  * @author Scott Redig
