@@ -2,12 +2,14 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
@@ -23,6 +25,7 @@ public class AddModulesPanel {
     private FlexTable thisPanel;
     private Button submitButton;
     private Button cancelButton;
+    private Button loadButton;
     private TextBox coorX;
     private TextBox coorY; 
     private TextBox moduleNumber;
@@ -34,6 +37,7 @@ public class AddModulesPanel {
     private Label orientationLabel;
     private Label conditionLabel;
     private Module moduleToEdit;
+    private Storage moduleStore;
     
     public AddModulesPanel() {
         
@@ -42,6 +46,7 @@ public class AddModulesPanel {
         
         this.submitButton = new Button("Submit");
         this.cancelButton = new Button("Cancel/Clear");
+        this.loadButton = new Button("Load");
         
         this.coorXLabel = new Label("X Position:");
         this.coorYLabel = new Label("Y Position:");
@@ -75,6 +80,7 @@ public class AddModulesPanel {
         this.thisPanel.setWidget(1, 3, this.orientationLabel);
         this.thisPanel.setWidget(1, 4, this.orientation);
         this.thisPanel.setWidget(1, 9, this.cancelButton);
+        this.thisPanel.setWidget(0, 11, this.loadButton);
         
         final AddModulesPanel addModulesPanel = this;
         
@@ -123,6 +129,23 @@ public class AddModulesPanel {
         this.cancelButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 addModulesPanel.clearPanel();
+            }
+        });
+        
+        
+        
+        this.loadButton.addClickHandler( new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                moduleStore = Storage.getLocalStorageIfSupported();
+                
+                if(moduleStore == null) {
+                    Window.alert("Local Storage not supported");
+                }
+                
+                String sConfigOne = moduleStore.getItem("config1");
+                
+                moduleList = new Area(sConfigOne);
+                
             }
         });
         
