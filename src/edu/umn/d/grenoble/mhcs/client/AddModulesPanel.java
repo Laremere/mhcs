@@ -1,5 +1,6 @@
 package edu.umn.d.grenoble.mhcs.client;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
@@ -8,8 +9,11 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
@@ -209,12 +213,30 @@ public class AddModulesPanel {
         
         this.testCaseButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
+                /*String url= URL.encode("http://d.umn.edu/~redi0068/proxy.php?case=1");// + testCaseText.getText());
                 
-                String proxy = "http://www.d.umn.edu/~piepe058/war/Proxy.php?url=";
-                String url = proxy +  "http://www.d.umn.edu/~abrooks/SomeTests.php?q=" + testCaseText.getText();
+                JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+                jsonp.setCallbackParam("GPScallback");
+                jsonp.requestObject(url,  new AsyncCallback<JavaScriptObject>() {
+                    public void onFailure(final Throwable caught){
+                        Window.alert("Json onFailure" + caught.getMessage());
+                    }
+                  
+                    @Override          
+                    public void onSuccess(final JavaScriptObject s) {
+                        JSONObject obj = new JSONObject(s);
+                        Window.alert(obj.toString());
+                        //update( obj.toString() );              
+                    }     
+                });*/
+                
+                String url = "http://www.d.umn.edu/~abrooks/SomeTests.php?q=" + testCaseText.getText();
                 url = URL.encode(url);
                 
                 RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+                builder.setIncludeCredentials(true);
+                builder.setUser("user");
+                builder.setPassword("pass");
                 
                 try{
                     Request request = builder.sendRequest(null, new RequestCallback(){
@@ -228,7 +250,7 @@ public class AddModulesPanel {
                                 update(rt);
                             }
                             else{
-                                Window.alert("Couldn't retreive JSON: " + response.getStatusText());
+                                Window.alert("Couldn't retreive JSON: " + response.getStatusText() + response.getStatusCode());
                             }
                         }
                     });
@@ -238,6 +260,7 @@ public class AddModulesPanel {
                 catch (Exception e){
                     Window.alert("RequestException: Could not retreive JSON");
                 }
+                
             }
         });
         
