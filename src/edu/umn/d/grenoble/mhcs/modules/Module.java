@@ -1,7 +1,5 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
-import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -95,69 +93,10 @@ public class Module {
  /* Setters */
     
     public void setId(final int newId) { this.idNumber = newId; }
-    public void setId(final double newId) { this.idNumber = (int) newId; }
-    public void setId(final JSONNumber newId) { this.idNumber = (int) newId.doubleValue(); }
     public void setX(final int newX) { this.xCoordinate = newX; }
-    public void setX(final double newX) { this.xCoordinate = (int) newX; }
-    public void setX(final JSONNumber newX) { this.xCoordinate = (int) newX.doubleValue(); }
     public void setY(final int newY) { this.yCoordinate = newY; }
-    public void setY(final double newY) { this.yCoordinate = (int) newY; }
-    public void setY(final JSONNumber newY) { this.yCoordinate = (int) newY.doubleValue(); }
     public void setOrientation(final Orientation newOrientation) { this.orientation = newOrientation; }
-    public void setOrientation(final int numberOfFlips) { 
-        if (numberOfFlips == 0) {  
-            this.orientation = Orientation.UPRIGHT; 
-        } else if (numberOfFlips == 1) {
-            this.orientation = Orientation.ON_SIDE;
-        } else if (numberOfFlips == 2) {
-            this.orientation = Orientation.UPSIDE_DOWN;
-        } else if (numberOfFlips == -1) {
-            this.orientation = Orientation.UNKNOWN;
-        } else { 
-            this.orientation = Orientation.UNKNOWN; 
-            Window.alert("Error setting module orientation: Value out of range."
-                    + this.newLine + this.defaultUnknown);
-        }
-    }
-    public void setOrientation(final String newOrientation) { 
-        String orientationString = this.cleanString(newOrientation);
-        if ( "UPRIGHT".equals(orientationString) ) { 
-            this.orientation = Orientation.UPRIGHT; 
-        } else if ( "ON_SIDE".equals(orientationString) ) {
-            this.orientation = Orientation.ON_SIDE;
-        } else if ( "UPSIDE_DOWN".equals(orientationString) ) {
-            this.orientation = Orientation.UPSIDE_DOWN;
-        } else if ( this.unknown.equals(orientationString) ) {
-            this.orientation = Orientation.UNKNOWN;
-        } else {
-            this.orientation = Orientation.UNKNOWN;
-            Window.alert("Error setting module orientation: Value must be one of the following:"
-                    + this.newLine + "UPRIGHT, ON_SIDE, UPSIDE_DOWN, UNKNOWN." + this.newLine 
-                    + this.defaultUnknown );
-        }                        
-    }
-    public void setOrientation(final JSONString newOrientation) { 
-        this.setOrientation( newOrientation.stringValue() ); 
-    }
     public void setStatus(final Status newStatus) { this.status = newStatus; }
-    public void setStatus(final String newStatus) { 
-        String statusString = this.cleanString(newStatus);
-        if ( "GOOD".equals(statusString) ) { 
-            this.status = Status.GOOD; 
-        } else if ( "NEEDS_REPAIR".equals(statusString) ) {
-            this.status = Status.NEEDS_REPAIR;
-        } else if ( "BEYOND_REPAIR".equals(statusString) ) {
-            this.status = Status.BEYOND_REPAIR;
-        } else if ( this.unknown.equals(statusString) ) {
-            this.status = Status.UNKNOWN;
-        } else {
-            this.status = Status.UNKNOWN;
-            Window.alert("Error setting module status: Value must be one of the following:"
-                    + this.newLine + "GOOD, NEEDS_REPAIR, BEYOND_REPAIR, UNKNOWN." + this.newLine 
-                    + "Module status set to \"Unknown\"");
-        }                        
-    }
-    public void setStatus(final JSONString newString) { this.setStatus( newString.stringValue() ); }
     
  /* Methods */
     

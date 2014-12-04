@@ -1,5 +1,7 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * The status of the module.
  * @author Scott Redig
@@ -53,6 +55,20 @@ public enum Status {
      */ 
     public String getDescription() {
         return this.description;
+    }
+    
+    public static Status getFromString(final String statusString){
+        Status result;
+        if ( "undamaged".equals(statusString) ) { 
+            result = Status.GOOD; 
+        } else if ( "repairable".equals(statusString) ) {
+            result = Status.NEEDS_REPAIR;
+        } else if ( "damaged".equals(statusString) ) {
+            result = Status.BEYOND_REPAIR;
+        } else {
+            result = Status.UNKNOWN;
+        }
+        return result;
     }
     
 }

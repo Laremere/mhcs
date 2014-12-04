@@ -1,5 +1,7 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * The orientation of the module.
  * @author Scott Redig
@@ -71,4 +73,13 @@ public enum Orientation {
         return this.flipsNeeded;
     }
       
+    
+    public static Orientation getFromFlips(final int flips){
+        for(Orientation o : Orientation.values()){
+            if(o.flipsNeeded == flips){
+                return o;
+            }
+        }
+        return Orientation.UNKNOWN;
+    }
 }

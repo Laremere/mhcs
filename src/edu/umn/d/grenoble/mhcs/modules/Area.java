@@ -7,7 +7,6 @@ import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.storage.client.Storage;
 
 /**
  * The area where modules land and are arranged into habitat configurations.
@@ -35,10 +34,6 @@ public class Area {
      * The list of Modules.
      */
     public List<Module> modules = new ArrayList<Module>();
-    
- /* CheckStyle Strings */
-    
-    private String test = "testConfig";   
 
   /* Constructors */
     
@@ -57,6 +52,25 @@ public class Area {
             this.modules.add(new Module(m));
         }
     }
+    
+    public Area(final String jsonSource){
+        JSONArray jsonArray = (JSONArray) JSONParser.parseLenient( jsonSource );
+        
+        for (int i = 0; i < jsonArray.size(); i += 1) {
+            Module loadedModule = new Module();
+            JSONObject jsonModule = (JSONObject) jsonArray.get(i);
+            loadedModule.setId((int) ((JSONNumber) jsonModule.get("code")).doubleValue());
+            loadedModule.setStatus(Status.getFromString(
+                    ((JSONString) jsonModule.get("status")).toString()));
+            loadedModule.setOrientation(Orientation.getFromFlips(
+                    (int) ((JSONNumber) jsonModule.get("turns")).doubleValue()));
+            loadedModule.setX((int) ((JSONNumber) jsonModule.get("X")).doubleValue());
+            loadedModule.setY((int) ((JSONNumber) jsonModule.get("Y")).doubleValue());
+            
+            this.addModule(loadedModule);
+        }
+    }
+    
       
  /* Getters */
     
@@ -92,6 +106,7 @@ public class Area {
      * JSONString for key-value pairs in order to create an arrayList of modules
      * and the associated module data.
      */
+    /*
     public void loadModules() {
 
         Storage testStorage = Storage.getLocalStorageIfSupported();
@@ -115,5 +130,5 @@ public class Area {
             loadedModule.setOrientation( (JSONString) savedModule.get("orientation") );
             
         }
-    }
+    }*/
 }
