@@ -1,6 +1,8 @@
 package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
@@ -14,6 +16,9 @@ import edu.umn.d.grenoble.mhcs.modules.Area;
  * @author Paul Rodysill
  */
 public class MarsHabitatConfigurationSystem implements EntryPoint {
+    
+    public final int TIMER = 30000;
+    
     AreaRenderer areaRenderer;
     WeatherPanel weather;
     SoundOutput soundOutput;
@@ -26,15 +31,15 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
      */
     public void onModuleLoad() {
         this.areaRenderer = new AreaRenderer(this);
-        weather = new WeatherPanel();
-        soundOutput = new SoundOutput();
+        this.weather = new WeatherPanel();
+        this.soundOutput = new SoundOutput();
         
-        RootPanel.get().add(soundOutput.getMuteButton());
+        RootPanel.get().add( this.soundOutput.getMuteButton() );
         
         //Trigger initialization of sounds, so they load before
         //they are used.
         SoundOutput.Sounds.values();
-     
+        this.startTimer();
     }
     
     //Called by areaRenderer, when the images are preloaded.
@@ -45,6 +50,22 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         
         AddModulesPanel thisPanel = new AddModulesPanel();        
         RootPanel.get().add(thisPanel.getAddModulesPanel());
-        RootPanel.get().add(weather.getWeatherPanel());
+        RootPanel.get().add( this.weather.getWeatherPanel() );
+    }
+    
+    public void startTimer() {
+        
+        Timer t = new Timer() {
+                
+            @Override
+            public void run() {
+                Window.alert( "                         WARNING! \n" + 
+                              " 10 days have passed since the milometer \n" +
+                              "device on the lift rover has been calibrated. \n\n" +
+                              "  (30 seconds for demonstration purposes)" );
+            }
+        };
+
+        t.schedule(TIMER);
     }
 }
