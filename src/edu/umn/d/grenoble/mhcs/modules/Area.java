@@ -89,7 +89,7 @@ public class Area {
      * Checks to see if the space is occupied by another module.
      * @param xCoordinate - The x-Coordinate of the space in question
      * @param yCoordinate - The Y-Coordinate of the space in question
-     * @return whether or not the space is occupied (True = Occupied, False = Vacant)
+     * @return The module if there is one on that space, null if there isn't
      */
     public Module occupied(final int xCoordinate, final int yCoordinate) {
         for (Module module : this.modules) {

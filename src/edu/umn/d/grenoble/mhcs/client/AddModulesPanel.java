@@ -26,6 +26,7 @@ import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.bus.SoundEvent;
 import edu.umn.d.grenoble.mhcs.modules.Area;
+import edu.umn.d.grenoble.mhcs.modules.ConfigurationBuilder;
 import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Orientation;
 import edu.umn.d.grenoble.mhcs.modules.Status;
@@ -52,6 +53,7 @@ public class AddModulesPanel {
     private Label orientationLabel;
     private Label conditionLabel;
     private Module moduleToEdit;
+    private ConfigurationBuilder configurations;
     
     public AddModulesPanel() {
         
@@ -127,6 +129,7 @@ public class AddModulesPanel {
                         Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleAdded) );
                         Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
+                        addModulesPanel.configurations.addModule(currentModule);
                         addModulesPanel.clearPanel();
                     }
                     else { Window.alert(INVALID); }                    
@@ -143,6 +146,7 @@ public class AddModulesPanel {
                         Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleEdited) );
                         Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
+                        addModulesPanel.configurations.editModule(moduleToEdit);
                         addModulesPanel.clearPanel();
                     } else { Window.alert(INVALID); }      
                     moduleToEdit = null;
@@ -170,6 +174,7 @@ public class AddModulesPanel {
 
                 Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleLoaded) );
                 Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
+                addModulesPanel.configurations = new ConfigurationBuilder( addModulesPanel.moduleList.getModules() );
             }
         });
         
