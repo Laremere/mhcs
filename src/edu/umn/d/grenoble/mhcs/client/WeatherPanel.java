@@ -60,8 +60,7 @@ public class WeatherPanel {
         });
     
         this.jsonp1 = new JsonpRequestBuilder();
-        this.jsonp1.setCallbackParam("callback");
-        
+        this.jsonp1.setCallbackParam("callback");        
         this.jsonp1.requestObject(url2,  new AsyncCallback<JavaScriptObject>() {
             public void onFailure(final Throwable caught){
                 Window.alert("Json onFailure");
