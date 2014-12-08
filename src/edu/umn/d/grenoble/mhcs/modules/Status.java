@@ -15,7 +15,7 @@ public enum Status {
     /**
      * This indicates that the module's status is unknown.
      */
-    UNKNOWN ("The module's status is currently unknown.", "uncertain"),
+    UNKNOWN ("The module's status is currently unknown.", "unknown"),
     
     /**
      * This indicates that the module's status is good.
@@ -25,7 +25,7 @@ public enum Status {
     /**
      * This indicates that the module is damaged but can still be repaired.
      */
-    NEEDS_REPAIR ("The module is damaged and needs repair.", "repairable"),
+    NEEDS_REPAIR ("The module is damaged and needs repair.", "uncertain"),
     
     /**
      * This indicates that the module is damaged and cannot be repaired.

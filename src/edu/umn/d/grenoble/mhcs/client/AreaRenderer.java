@@ -34,7 +34,7 @@ public class AreaRenderer {
     
  /* Initialization */
     
-    private static final int tileSize = 40;
+    private static final int tileSize = 10;
     private Canvas canvas;
     private int imagesRemaining;
     private Map<String, ImageElement> images = new HashMap<String, ImageElement>();
