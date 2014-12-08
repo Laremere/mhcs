@@ -67,6 +67,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         AddModulesPanel thisPanel = new AddModulesPanel();               
         this.tabPanel.add(thisPanel.getAddModulesPanel(), new String("Add modules"));
         this.tabPanel.add(new FlowPanel(), "Minimum Configurations");
+        this.tabPanel.add(new ConfigPanel().GetPanel(), "Make Configuration");
         //RootPanel.get().add(tabPanel);
         //RootPanel.get().add( this.weather.getWeatherPanel() );
         tabPanel.selectTab(0);
