@@ -19,7 +19,7 @@ import edu.umn.d.grenoble.mhcs.modules.Area;
  */
 public class MarsHabitatConfigurationSystem implements EntryPoint {
     
-    public final int TIMER = 600000;
+    public final int TIMER = 864000000;
     
     AreaRenderer areaRenderer;
     WeatherPanel weather;
@@ -66,10 +66,8 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
                 
             @Override
             public void run() {
-                Window.alert( "                         WARNING! \n" + 
-                              " 10 days have passed since the milometer \n" +
-                              "device on the lift rover has been calibrated. \n\n" +
-                              "   (10 minutes for demonstration purposes)" );
+                Window.alert( "WARNING! \n" + " 10 days have passed since the milometer \n" +
+                              "device on the lift rover has been calibrated." );
             }
         };
 
