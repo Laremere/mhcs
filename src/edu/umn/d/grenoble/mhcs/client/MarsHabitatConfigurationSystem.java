@@ -3,7 +3,9 @@ package edu.umn.d.grenoble.mhcs.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
@@ -22,6 +24,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     AreaRenderer areaRenderer;
     WeatherPanel weather;
     SoundOutput soundOutput;
+    TabPanel tabPanel;
     
     public MarsHabitatConfigurationSystem(){
     }
@@ -33,6 +36,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         this.areaRenderer = new AreaRenderer(this);
         this.weather = new WeatherPanel();
         this.soundOutput = new SoundOutput();
+        tabPanel = new TabPanel();
         
         RootPanel.get().add( this.soundOutput.getMuteButton() );
         
@@ -48,9 +52,12 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         Area area = new Area();
         Bus.bus.fireEvent(new AreaUpdateEvent(area));
         
-        AddModulesPanel thisPanel = new AddModulesPanel();        
-        RootPanel.get().add(thisPanel.getAddModulesPanel());
+        AddModulesPanel thisPanel = new AddModulesPanel();               
+        tabPanel.add(thisPanel.getAddModulesPanel(), new String("Add modules"));
+        tabPanel.add(new FlowPanel(), "Minimum Configurations");
+        RootPanel.get().add(tabPanel);
         RootPanel.get().add( this.weather.getWeatherPanel() );
+        tabPanel.selectTab(0);
     }
     
     public void startTimer() {
