@@ -84,10 +84,8 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
                 
             @Override
             public void run() {
-                Window.alert( "                         WARNING! \n" + 
-                              " 10 days have passed since the milometer \n" +
-                              "device on the lift rover has been calibrated. \n\n" +
-                              "   (2 minutes for demonstration purposes)" );
+                Window.alert( "WARNING! \n" + " 10 days have passed since the milometer \n" +
+                              "device on the lift rover has been calibrated." );
             }
         };
 

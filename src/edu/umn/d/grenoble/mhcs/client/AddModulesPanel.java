@@ -111,7 +111,6 @@ public class AddModulesPanel {
             public void onClick(final ClickEvent event) {
                 
                 final String INVALID = "Invalid entry";
-                final String MODULE_ADDED = "Module added \n";
                 final String MODULES_LOGGED = " module(s) have been logged";
                 
                 if ( addModulesPanel.moduleToEdit == null ) {
@@ -127,7 +126,7 @@ public class AddModulesPanel {
                         addModulesPanel.moduleList.addModule(currentModule);
                         Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
                         Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleAdded) );
-                        Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
+                        Window.alert( "Module added \n" + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
                         addModulesPanel.configurations.addModule(currentModule);
                         addModulesPanel.clearPanel();
@@ -144,7 +143,7 @@ public class AddModulesPanel {
                     if ( addModulesPanel.moduleToEdit.isValid() ) {                        
                         Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
                         Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleEdited) );
-                        Window.alert( MODULE_ADDED + addModulesPanel.moduleList.getModules().size() 
+                        Window.alert( "Module edited \n" + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
                         addModulesPanel.configurations.editModule(moduleToEdit);
                         addModulesPanel.clearPanel();
