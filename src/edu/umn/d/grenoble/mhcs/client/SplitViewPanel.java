@@ -19,6 +19,9 @@ public class SplitViewPanel extends Tab {
     Button submitButton;
     FlowPanel splitViewPanel;
     
+    /**
+     * Constructor for SplitViewPanel
+     */
     public SplitViewPanel(){
         this.listBox1 = new ListBox();
         this.listBox2 = new ListBox();
@@ -32,9 +35,15 @@ public class SplitViewPanel extends Tab {
         this.splitViewPanel.add(this.submitButton);
         
         final SplitViewPanel splitViewPanel = this;
+        
+        /**
+         * Adds listener to submit button
+         * Fires area update event to area renderer
+         */
         this.submitButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 String[] areas = AreaHolder.getAreas();
+                //Gets appropriate areas from list and fires event.
                 Area area1 = AreaHolder.getArea(areas[splitViewPanel.listBox1.getSelectedIndex() -1 ]);
                 Area area2 = AreaHolder.getArea(areas[splitViewPanel.listBox2.getSelectedIndex() -1 ]);
                 Bus.bus.fireEvent( new AreaUpdateEvent( area1, area2 ));
@@ -50,6 +59,9 @@ public class SplitViewPanel extends Tab {
     }
 
     @Override
+    /**
+     * Event fired when tab is switched to in UI
+     */
     void switchedTo() {
         this.listBox1.clear();
         this.listBox2.clear();
@@ -60,6 +72,7 @@ public class SplitViewPanel extends Tab {
             this.listBox1.addItem("Nothing ");
             this.listBox2.addItem("Nothing");
         }
+        //Cycles through list of areas and adds to list boxes
         for(String name : areas){
             if(name == null || name.equals("")){}
             else{
