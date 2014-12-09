@@ -163,13 +163,8 @@ public class AddModulesPanel {
         
         this.loadButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                Storage moduleStore = Storage.getLocalStorageIfSupported();
-                if(moduleStore == null) {
-                    Window.alert("Local Storage not supported");
-                }
-                
-                String sConfigOne = moduleStore.getItem(moduleSaveName);
-                moduleList = new Area(sConfigOne);
+
+                moduleList = AreaHolder.getArea(AreaHolder.asLandedName);
 
                 Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleLoaded) );
                 Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
@@ -179,12 +174,7 @@ public class AddModulesPanel {
         
         this.saveButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
-                Storage moduleStore = Storage.getLocalStorageIfSupported();
-                if(moduleStore == null) {
-                    Window.alert("Local Storage not supported!");
-                }
-                
-                moduleStore.setItem(moduleSaveName, moduleList.toJsonString());
+                AreaHolder.saveArea(AreaHolder.asLandedName, moduleList);
                 Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleSaved) );
                 
             }
