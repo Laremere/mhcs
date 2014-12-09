@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEventHandler;
@@ -31,7 +32,7 @@ import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Orientation;
 import edu.umn.d.grenoble.mhcs.modules.Status;
 
-public class AddModulesPanel {
+public class AddModulesPanel extends Tab{
     private static final String moduleSaveName = "grenoble_module_list";
     
     private Area moduleList;
@@ -71,8 +72,8 @@ public class AddModulesPanel {
         this.conditionLabel = new Label("Module Condition:");
         this.orientationLabel = new Label("Orientation:");
         
-        testCaseButton = new Button("Load a test case");
-        testCaseText = new TextBox();
+        this.testCaseButton = new Button("Load a test case");
+        this.testCaseText = new TextBox();
         
         this.coorX = new TextBox();
         this.coorY = new TextBox();
@@ -164,7 +165,7 @@ public class AddModulesPanel {
         this.loadButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
 
-                moduleList = AreaHolder.getArea(AreaHolder.asLandedName);
+                addModulesPanel.moduleList = AreaHolder.getArea(AreaHolder.asLandedName);
 
                 Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleLoaded) );
                 Bus.bus.fireEvent( new AreaUpdateEvent(addModulesPanel.moduleList) );
@@ -262,7 +263,7 @@ public class AddModulesPanel {
     
     public void update(String rt) {
         String stringAll = rt;
-        moduleList = new Area(stringAll);
+        this.moduleList = new Area(stringAll);
         Bus.bus.fireEvent( new AreaUpdateEvent(this.moduleList) );
         
     }
@@ -278,4 +279,24 @@ public class AddModulesPanel {
     public FlexTable getAddModulesPanel() {
         return this.thisPanel;
     }
+
+    @Override
+    public Widget getPanel() {
+        return this.thisPanel;
+        
+    }
+
+    @Override
+    public void switchedTo() {
+        Bus.bus.fireEvent( new AreaUpdateEvent(this.moduleList) );
+        
+    }
+
+    @Override
+    public String getTabName() {
+        return "Add Modules";
+        
+    }
+    
+    
 }
