@@ -32,7 +32,11 @@ public class AreaHolder {
             }
         }
         String newList = moduleStore.getItem(areaListName);
-        newList += "," + name;
+        if(newList == null || newList.equals("") || newList.startsWith("null") ){
+            newList = name;
+        } else {
+            newList += "," + name;   
+        }
         moduleStore.setItem(areaListName, newList);
     }
     
@@ -40,7 +44,12 @@ public class AreaHolder {
         if(moduleStore == null) {
             Window.alert("Local Storage not supported");
         }
-        return moduleStore.getItem(areaListName).split(",");
+        
+        String moduleString = moduleStore.getItem(areaListName);
+        if(moduleString == null || moduleString.equals("")){
+            return new String[]{};
+        }
+        return moduleString.split(",");
     }
     
     public static Area getArea(String name) {

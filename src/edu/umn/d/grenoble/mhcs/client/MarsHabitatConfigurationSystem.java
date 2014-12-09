@@ -1,18 +1,15 @@
 package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-
-import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
-import edu.umn.d.grenoble.mhcs.bus.Bus;
-import edu.umn.d.grenoble.mhcs.modules.Area;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -25,13 +22,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     public final int TIMER = 864000000;
     
     AreaRenderer areaRenderer;
-    WeatherPanel weather;
-    SoundOutput soundOutput;
-    TabPanel tabPanel;
-    DockPanel dockPanel;
-    FlowPanel leftPanel;
-    Label header;
-    
+
     public MarsHabitatConfigurationSystem(){
     }
     
@@ -39,16 +30,10 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        this.areaRenderer = new AreaRenderer(this);
-        this.weather = new WeatherPanel();
-        this.soundOutput = new SoundOutput();
-        tabPanel = new TabPanel();
-        dockPanel = new DockPanel();
-        leftPanel = new FlowPanel();
-        header = new Label("Mars Habitat Configuration System");
-        header.setStyleName("headerLabel");
-        dockPanel.add(header, DockPanel.NORTH);
-        
+        this.areaRenderer = new AreaRenderer(this); 
+//        
+//        
+//        
         
         //RootPanel.get().add( this.soundOutput.getMuteButton() );
         
@@ -60,36 +45,54 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     
     //Called by areaRenderer, when the images are preloaded.
     public void Begin() {
-        //RootPanel.get().add(this.areaRenderer.GetCanvas());
-        Area area = new Area();
-        Bus.bus.fireEvent(new AreaUpdateEvent(area));
-        
-        AddModulesPanel thisPanel = new AddModulesPanel();               
-        this.tabPanel.add(thisPanel.getAddModulesPanel(), new String("Add modules"));
-        this.tabPanel.add(new FlowPanel(), "Minimum Configurations");
-        this.tabPanel.add(new ConfigPanel().GetPanel(), "Make Configuration");
-        //RootPanel.get().add(tabPanel);
-        //RootPanel.get().add( this.weather.getWeatherPanel() );
-        tabPanel.selectTab(0);
-        this.dockPanel.add(this.tabPanel, DockPanel.SOUTH);
+        DockPanel dockPanel = new DockPanel();
+
+        { 
+            //North
+            Label header = new Label("Mars Habitat Configuration System");
+            header.setStyleName("headerLabel");
+            dockPanel.add(header, DockPanel.NORTH);
+        }
+        { 
+            //East
+            FlowPanel eastPanel = new FlowPanel(); 
+            eastPanel.add(new WeatherPanel().getWeatherPanel());
+            eastPanel.add(new SoundOutput().getMuteButton());
+            dockPanel.add(eastPanel, DockPanel.EAST);
+        }
+        { 
+            //South
+            final Tab[] tabs = new Tab[] {
+                new AddModulesPanel(),
+                new SplitViewPanel(),
+            };
+            TabPanel tabPanel = new TabPanel();
+            tabPanel.addSelectionHandler(new SelectionHandler<Integer>(){
+                @Override
+                public void onSelection(final SelectionEvent<Integer> event) {
+                    tabs[event.getSelectedItem()].switchedTo();
+                }
+            });
+            for (Tab tab : tabs){
+                tabPanel.add(tab.getPanel(), tab.getTabName());
+            }
+            tabPanel.selectTab(0);
+            dockPanel.add(tabPanel, DockPanel.SOUTH);
+
+        }   
+
         dockPanel.add(this.areaRenderer.GetCanvas(), DockPanel.CENTER);
-        leftPanel.add(this.weather.getWeatherPanel());
-        leftPanel.add(this.soundOutput.getMuteButton());
-        dockPanel.add(leftPanel, DockPanel.EAST);
         RootPanel.get().add(dockPanel);
     }
     
     public void startTimer() {
-        
         Timer t = new Timer() {
-                
             @Override
             public void run() {
                 Window.alert( "WARNING! \n" + " 10 days have passed since the milometer \n" +
                               "device on the lift rover has been calibrated." );
             }
         };
-
         t.schedule(this.TIMER);
     }
 }
