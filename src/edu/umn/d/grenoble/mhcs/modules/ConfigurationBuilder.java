@@ -42,10 +42,11 @@ public class ConfigurationBuilder {
      */
     public ConfigurationBuilder(final List<Module> moduleList) {
         
-        for (Module currentModule : moduleList) {
-            this.storeModule(currentModule);
+        for ( int i = 0; i < moduleList.size(); i += 1){
+            this.storeModule( moduleList.get(i) );
         }
         this.checkConfigs();
+       
     }
     
  /* Getter */
@@ -108,8 +109,8 @@ public class ConfigurationBuilder {
         
         List<Module> typeList = this.getTypeList(module);
         if ( module.getStatus() == Status.GOOD && module.getType() != Type.INVALID &&
-             typeList != null ) { typeList.add(module); 
-        } else { unusableModules.add(module); }
+            typeList != null ) { typeList.add(module); 
+        } else { this.unusableModules.add(module); }
     }
     
     /**
@@ -117,7 +118,7 @@ public class ConfigurationBuilder {
      * @param typeList - the list of modules of a given type
      * @param module - The module to remove
      */
-    private void removeModule( Module oldModule) {  
+    private void removeModule( final Module oldModule) {  
         
         List<Module> typeList = this.getTypeList(oldModule);
         
