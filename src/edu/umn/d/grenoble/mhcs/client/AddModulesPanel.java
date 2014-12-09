@@ -89,6 +89,8 @@ public class AddModulesPanel extends Tab{
             this.condition.addItem(s.name());
         }
         
+        this.configurations = new ConfigurationBuilder();
+        
         this.thisPanel.setWidget(0, 0, this.coorXLabel);  
         this.thisPanel.setWidget(0, 1, this.coorX);
         this.thisPanel.setWidget(1, 0, this.coorYLabel);
