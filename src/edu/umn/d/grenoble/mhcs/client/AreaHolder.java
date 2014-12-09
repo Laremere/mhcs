@@ -40,7 +40,12 @@ public class AreaHolder {
         if(moduleStore == null) {
             Window.alert("Local Storage not supported");
         }
-        return moduleStore.getItem(areaListName).split(",");
+        
+        String moduleString = moduleStore.getItem(areaListName);
+        if(moduleString == null || moduleString.equals("")){
+            return new String[]{};
+        }
+        return moduleString.split(",");
     }
     
     public static Area getArea(String name) {
