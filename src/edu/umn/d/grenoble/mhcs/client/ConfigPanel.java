@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ConfigPanel {
+public class ConfigPanel extends Tab {
     private SimpleLayoutPanel holder = new SimpleLayoutPanel();
     
     public ConfigPanel(){
@@ -12,8 +12,20 @@ public class ConfigPanel {
         this.holder.setHeight("100px");
         this.holder.setWidth("800px");
     }
-    
-    public Widget GetPanel(){
+
+    @Override
+    Widget getPanel() {
         return this.holder;
+    }
+
+    @Override
+    void switchedTo() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    String getTabName() {
+        return "Make New Configuration";
     }
 }
