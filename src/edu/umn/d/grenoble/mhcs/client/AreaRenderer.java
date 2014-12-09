@@ -31,14 +31,21 @@ import java.util.Map;
  * @author Paul Rodysill
  */
 public class AreaRenderer {
-    
+    private static final String units = "px";
+    private static final int canvasWidth = 1000;
+    private static final int canvasHeight = 500;
  /* Initialization */
     
-    private static final int tileSize = 10;
     private Canvas canvas;
     private int imagesRemaining;
     private Map<String, ImageElement> images = new HashMap<String, ImageElement>();
     private String background = "images/MarsModuleLandingArea.jpg";
+    private Area currentView;
+    private Area splitView;
+    
+    private int tileSize = 10;
+    private float viewX;
+    private float viewY;
     
     public AreaRenderer(final MarsHabitatConfigurationSystem mhcs) {
         // Preload images
@@ -81,17 +88,18 @@ public class AreaRenderer {
             return;
         }
         
-        final String px = "px";
-        this.canvas.setSize(tileSize * Area.Width + px, tileSize * Area.Height + px);
-        this.canvas.setCoordinateSpaceWidth(tileSize * Area.Width);
-        this.canvas.setCoordinateSpaceHeight(tileSize * Area.Height);
+        this.canvas.setSize(canvasWidth + units, canvasHeight + units);
+        this.canvas.setCoordinateSpaceWidth(canvasWidth);
+        this.canvas.setCoordinateSpaceHeight(canvasHeight);
         
         final AreaRenderer areaRenderer = this;
         
         Bus.bus.addHandler(AreaUpdateEvent.TYPE, new AreaUpdateEventHandler(){
             @Override
             public void onEvent(final AreaUpdateEvent event) {
-                areaRenderer.RenderArea(event.getArea());
+                areaRenderer.currentView = new Area(event.getArea());
+                areaRenderer.splitView = new Area(event.getSideArea());
+                areaRenderer.RenderArea();
             }            
         });
         
@@ -99,8 +107,8 @@ public class AreaRenderer {
 
             @Override
             public void onClick(final ClickEvent event) {
-                int x = event.getRelativeX(areaRenderer.canvas.getElement()) / AreaRenderer.tileSize + 1;
-                int y = Area.Height - event.getRelativeY(areaRenderer.canvas.getElement()) / AreaRenderer.tileSize;
+                int x = event.getRelativeX(areaRenderer.canvas.getElement()) / areaRenderer.tileSize + 1;
+                int y = Area.Height - event.getRelativeY(areaRenderer.canvas.getElement()) / areaRenderer.tileSize;
                 Bus.bus.fireEvent(new AreaClickEvent(x, y));
             }            
         });
@@ -120,20 +128,43 @@ public class AreaRenderer {
      * Adds the modules to the canvas.
      * @param area - The canvas that the modules are to be added to
      */
-    private void RenderArea(final Area area) {
+    private void RenderArea() {
         Context2d context = this.canvas.getContext2d();
         
         context.setFillStyle("#444444");
-        context.drawImage(this.images.get(this.background), 0, 0, Area.Width * tileSize, Area.Height * tileSize);
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
         
-        for (Module module : area.getModules()) {
-            context.drawImage(
-                    this.images.get(module.getType().getImageUrl()),
-                    (module.getX() - 1) * tileSize, 
-                    (Area.Height - module.getY()) * tileSize,
-                    tileSize, tileSize);
+        if (this.splitView == null){
+            this.RenderModules(0, canvasWidth, 0, canvasHeight, this.currentView, 0, 0, context);    
+        } else {
+            this.RenderModules(0, canvasWidth / 2, 0, canvasHeight, this.currentView, 0, 0, context);
+            this.RenderModules(canvasWidth / 2, canvasWidth, 0, canvasHeight, this.splitView, 0, 0, context);
         }
+        
         
     }
     
+    private void RenderModules(final int canvasXmin, final int canvasXmax, 
+            final int canvasYmin, final int canvasYmax,
+            final Area area, final float xMin, final float yMin, final Context2d ctx){
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(canvasXmin, canvasYmin);
+        ctx.lineTo(canvasXmin, canvasYmax);
+        ctx.lineTo(canvasXmax, canvasYmax);
+        ctx.lineTo(canvasXmax, canvasYmin);
+        ctx.moveTo(canvasXmin, canvasYmin);
+        ctx.clip();
+
+        ctx.drawImage(this.images.get(this.background), canvasXmin, canvasYmin, Area.Width * tileSize, Area.Height * tileSize);
+        for (Module module : this.currentView.getModules()) {
+            ctx.drawImage(
+                    this.images.get(module.getType().getImageUrl()),
+                    (module.getX() - 1) * tileSize + canvasXmin, 
+                    (Area.Height - module.getY()) * tileSize + canvasYmin,
+                    tileSize, tileSize);
+        }
+        
+        ctx.restore();
+    }
 }

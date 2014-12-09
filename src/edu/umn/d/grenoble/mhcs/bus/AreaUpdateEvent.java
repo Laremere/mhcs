@@ -9,13 +9,23 @@ public class AreaUpdateEvent extends GwtEvent<AreaUpdateEventHandler>{
             new Type<AreaUpdateEventHandler>();
     
     private Area area;
+    private Area sideArea;
     
     public AreaUpdateEvent(final Area area_){
         this.area = area_;
     }
     
+    public AreaUpdateEvent(final Area area_, final Area sideArea_){
+        this.area = area_;
+        this.sideArea = sideArea_;
+    }
+    
     public Area getArea() {
         return this.area;
+    }
+    
+    public Area getSideArea() {
+        return this.sideArea;
     }
 
     @Override
