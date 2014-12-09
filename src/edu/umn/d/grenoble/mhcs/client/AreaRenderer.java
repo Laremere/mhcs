@@ -9,8 +9,10 @@ import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
+
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
@@ -205,15 +207,16 @@ public class AreaRenderer {
         int mapWidth = this.tileSize * Area.Width;
         int mapHeight = this.tileSize * Area.Height;
 
-        int xMin = Math.round((mapWidth - viewWidth) * this.viewX);
-        int yMin = Math.round((mapHeight - viewHeight) * this.viewY);
+        int xReference = canvasXmin - Math.round((mapWidth - viewWidth) * this.viewX);
+        int yReference = canvasYmin - Math.round((mapHeight - viewHeight) * this.viewY);
         
-        ctx.drawImage(this.images.get(this.background), canvasXmin, canvasYmin, mapWidth, mapHeight);
+        
+        ctx.drawImage(this.images.get(this.background), xReference, yReference, mapWidth, mapHeight);
         for (Module module : this.currentView.getModules()) {
             ctx.drawImage(
                     this.images.get(module.getType().getImageUrl()),
-                    (module.getX() - 1) * this.tileSize + canvasXmin - xMin, 
-                    (Area.Height - module.getY()) * this.tileSize + canvasYmin - yMin,
+                    (module.getX() - 1) * this.tileSize + xReference, 
+                    (Area.Height - module.getY()) * this.tileSize + yReference,
                     this.tileSize, this.tileSize);
         }
         
