@@ -116,9 +116,9 @@ public class ConfigurationBuilder {
     private void removeModule( List<Module> typeList, Module module) {  
         
         if ( !typeList.isEmpty() ) {
-            for (Module m : typeList) {
-                if ( m.getId() == module.getId() ) {
-                    typeList.remove(m);
+            for (int i = 0; i < typeList.size(); i += 1) {
+                if ( typeList.get(i).getId() == module.getId() ) {
+                    typeList.remove(i);
                 }
             }
         }
