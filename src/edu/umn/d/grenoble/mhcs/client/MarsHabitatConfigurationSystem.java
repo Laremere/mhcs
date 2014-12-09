@@ -3,7 +3,10 @@ package edu.umn.d.grenoble.mhcs.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
@@ -25,6 +28,9 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     WeatherPanel weather;
     SoundOutput soundOutput;
     TabPanel tabPanel;
+    DockPanel dockPanel;
+    FlowPanel leftPanel;
+    Label header;
     
     public MarsHabitatConfigurationSystem(){
     }
@@ -37,8 +43,14 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         this.weather = new WeatherPanel();
         this.soundOutput = new SoundOutput();
         tabPanel = new TabPanel();
+        dockPanel = new DockPanel();
+        leftPanel = new FlowPanel();
+        header = new Label("Mars Habitat Configuration System");
+        header.setStyleName("headerLabel");
+        dockPanel.add(header, DockPanel.NORTH);
         
-        RootPanel.get().add( this.soundOutput.getMuteButton() );
+        
+        //RootPanel.get().add( this.soundOutput.getMuteButton() );
         
         //Trigger initialization of sounds, so they load before
         //they are used.
@@ -48,16 +60,23 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     
     //Called by areaRenderer, when the images are preloaded.
     public void Begin() {
-        RootPanel.get().add(this.areaRenderer.GetCanvas());
+        //RootPanel.get().add(this.areaRenderer.GetCanvas());
         Area area = new Area();
         Bus.bus.fireEvent(new AreaUpdateEvent(area));
         
         AddModulesPanel thisPanel = new AddModulesPanel();               
-        tabPanel.add(thisPanel.getAddModulesPanel(), new String("Add modules"));
-        tabPanel.add(new FlowPanel(), "Minimum Configurations");
-        RootPanel.get().add(tabPanel);
-        RootPanel.get().add( this.weather.getWeatherPanel() );
+        this.tabPanel.add(thisPanel.getAddModulesPanel(), new String("Add modules"));
+        this.tabPanel.add(new FlowPanel(), "Minimum Configurations");
+        this.tabPanel.add(new ConfigPanel().GetPanel(), "Make Configuration");
+        //RootPanel.get().add(tabPanel);
+        //RootPanel.get().add( this.weather.getWeatherPanel() );
         tabPanel.selectTab(0);
+        this.dockPanel.add(this.tabPanel, DockPanel.SOUTH);
+        dockPanel.add(this.areaRenderer.GetCanvas(), DockPanel.CENTER);
+        leftPanel.add(this.weather.getWeatherPanel());
+        leftPanel.add(this.soundOutput.getMuteButton());
+        dockPanel.add(leftPanel, DockPanel.EAST);
+        RootPanel.get().add(dockPanel);
     }
     
     public void startTimer() {
