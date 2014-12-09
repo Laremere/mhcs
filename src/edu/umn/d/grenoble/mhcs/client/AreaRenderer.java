@@ -48,8 +48,8 @@ public class AreaRenderer {
     final private int tileSizeStep = 10;
     private int tileSize = this.tileSizeMin;
     
-    private float viewX = 0.5f;
-    private float viewY = 0.5f;
+    private float viewX = 0;
+    private float viewY = 1;
     
     public AreaRenderer(final MarsHabitatConfigurationSystem mhcs) {
         // Preload images
@@ -102,14 +102,12 @@ public class AreaRenderer {
             @Override
             public void onEvent(final AreaUpdateEvent event) {
                 if (event.getMoveType() == null){
-                    Area view1 = event.getArea();
-                    Area view2 = event.getSideArea();
-                    if (view1 != null){
-                        areaRenderer.currentView = new Area(view1);
-                        if (view2 != null){
-                            areaRenderer.splitView = new Area(view2);
-                        }
-                    }    
+                    areaRenderer.currentView = new Area(event.getArea());
+                    if (event.getSideArea() != null){
+                        areaRenderer.splitView = new Area(event.getSideArea());
+                    } else {
+                        areaRenderer.splitView = null;
+                    }
                 } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
                     areaRenderer.tileSize += areaRenderer.tileSizeStep;
                     if (areaRenderer.tileSize > areaRenderer.tileSizeMax){
@@ -127,7 +125,7 @@ public class AreaRenderer {
                     }
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveDown){
                     areaRenderer.viewY += 1.0f / areaRenderer.tileSize;
-                    if (areaRenderer.viewY > 0){
+                    if (areaRenderer.viewY > 1){
                         areaRenderer.viewY = 1;
                     }                    
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveLeft){
@@ -214,8 +212,8 @@ public class AreaRenderer {
         for (Module module : this.currentView.getModules()) {
             ctx.drawImage(
                     this.images.get(module.getType().getImageUrl()),
-                    (module.getX() - 1) * this.tileSize + canvasXmin + xMin, 
-                    (Area.Height - module.getY()) * this.tileSize + canvasYmin + yMin,
+                    (module.getX() - 1) * this.tileSize + canvasXmin - xMin, 
+                    (Area.Height - module.getY()) * this.tileSize + canvasYmin - yMin,
                     this.tileSize, this.tileSize);
         }
         

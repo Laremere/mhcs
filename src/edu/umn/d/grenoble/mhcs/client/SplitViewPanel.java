@@ -42,10 +42,11 @@ public class SplitViewPanel extends Tab {
          */
         this.submitButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
+                
                 String[] areas = AreaHolder.getAreas();
                 //Gets appropriate areas from list and fires event.
-                Area area1 = AreaHolder.getArea(areas[splitViewPanel.listBox1.getSelectedIndex() -1 ]);
-                Area area2 = AreaHolder.getArea(areas[splitViewPanel.listBox2.getSelectedIndex() -1 ]);
+                Area area1 = AreaHolder.getArea(areas[splitViewPanel.listBox1.getSelectedIndex()]);
+                Area area2 = AreaHolder.getArea(areas[splitViewPanel.listBox2.getSelectedIndex()]);
                 Bus.bus.fireEvent( new AreaUpdateEvent( area1, area2 ));
             }
         });
