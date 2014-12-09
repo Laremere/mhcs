@@ -24,10 +24,12 @@ public class ConfigurationBuilder {
     private List<Module> airlock = new ArrayList<Module>();
     private List<Module> medical = new ArrayList<Module>();
     
-    private List<Module> minConfigA = new ArrayList<Module>();
-    private List<Module> minConfigB = new ArrayList<Module>();
-    //private List<Module> config1 = new ArrayList<Module>();
-    //private List<Module> config2 = new ArrayList<Module>();
+    private List<Module> unusableModules = new ArrayList<Module>();
+    
+    private Area minConfigA = new Area();
+    private Area minConfigB = new Area();
+    //private Area config1 = new Area();
+    //private Area config2 = new Area();
     
     /**
      * Default (Empty) Constructor
@@ -48,10 +50,10 @@ public class ConfigurationBuilder {
     
  /* Getter */
     
-    public List<Module> getMinConfigA() { return this.minConfigA; } 
-    public List<Module> getMinConfigB() { return this.minConfigB; }
-    //public List<Module> getConfig1() { return this.config1; }
-    //public List<Module> getConfig2() { return this.config2; }
+    public Area getMinConfigA() { return this.minConfigA; } 
+    public Area getMinConfigB() { return this.minConfigB; }
+    //public Area getConfig1() { return this.config1; }
+    //public Area getConfig2() { return this.config2; }
     
  /* Public Methods */
     
@@ -70,16 +72,12 @@ public class ConfigurationBuilder {
     
     /**
      * Edits an existing module in the configuration list. Will only
-     * @param editedModule - The module that had it's values changed
+     * @param oldModule - The old module data to be removed
+     * @param newModule - The new module data to be added
      */
-    public void editModule(final Module editedModule) {
-        
-        // Removes the module from the list associated with the module's type
-        List<Module> typeList = this.getTypeList(editedModule);  
-        if (typeList != null) { this.removeModule(typeList, editedModule); }
-        
-        // Adds the new module reflecting the change
-        this.addModule(editedModule);
+    public void editModule(final Module oldModule, final Module newModule) {
+        this.removeModule(oldModule); 
+        this.addModule(newModule);
     }
     
     /**
@@ -92,6 +90,11 @@ public class ConfigurationBuilder {
                  this.canteen.size() >= 1 && this.power.size() >= 1 && 
                  this.control.size() >= 1 && this.airlock.size() >= 1 );      
     }   
+ 
+    
+    
+    
+    
     
  /* Private Methods */
     
@@ -105,7 +108,8 @@ public class ConfigurationBuilder {
         
         List<Module> typeList = this.getTypeList(module);
         if ( module.getStatus() == Status.GOOD && module.getType() != Type.INVALID &&
-             typeList != null ) { typeList.add(module); }    
+             typeList != null ) { typeList.add(module); 
+        } else { unusableModules.add(module); }
     }
     
     /**
@@ -113,11 +117,13 @@ public class ConfigurationBuilder {
      * @param typeList - the list of modules of a given type
      * @param module - The module to remove
      */
-    private void removeModule( List<Module> typeList, Module module) {  
+    private void removeModule( Module oldModule) {  
+        
+        List<Module> typeList = this.getTypeList(oldModule);
         
         if ( !typeList.isEmpty() ) {
             for (int i = 0; i < typeList.size(); i += 1) {
-                if ( typeList.get(i).getId() == module.getId() ) {
+                if ( typeList.get(i) == oldModule ) {
                     typeList.remove(i);
                 }
             }
@@ -148,8 +154,8 @@ public class ConfigurationBuilder {
     }
     
     /**
-     * Checks to see if configurations are available and if they are,
-     * it calls the appropriate generator function.
+     * Checks to see if configurations are available and if so 
+     * handles the configuration accordingly.
      */
     private void checkConfigs() {
         

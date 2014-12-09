@@ -134,6 +134,7 @@ public class AddModulesPanel extends Tab{
                     }
                     else { Window.alert(INVALID); }                    
                 } else {
+                    Module oldModule = moduleToEdit;
                     addModulesPanel.moduleToEdit.setId( Integer.parseInt( addModulesPanel.moduleNumber.getText() ) );
                     addModulesPanel.moduleToEdit.setX( Integer.parseInt( addModulesPanel.coorX.getText() ) );
                     addModulesPanel.moduleToEdit.setY( Integer.parseInt( addModulesPanel.coorY.getText() ) );
@@ -146,7 +147,7 @@ public class AddModulesPanel extends Tab{
                         Bus.bus.fireEvent( new SoundEvent(SoundOutput.Sounds.ModuleEdited) );
                         Window.alert( "Module edited \n" + addModulesPanel.moduleList.getModules().size() 
                                 + MODULES_LOGGED );
-                        addModulesPanel.configurations.editModule(moduleToEdit);
+                        addModulesPanel.configurations.editModule(oldModule, moduleToEdit);
                         addModulesPanel.clearPanel();
                     } else { Window.alert(INVALID); }      
                     moduleToEdit = null;
