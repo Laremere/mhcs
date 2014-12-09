@@ -1,5 +1,7 @@
 package edu.umn.d.grenoble.mhcs.modules;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * The module and information pertaining to it such as coordinates, 
  * status, type and orientation.
@@ -70,7 +72,7 @@ public class Module {
         this.orientation = other.orientation;
         this.status = other.status;
         this.xCoordinate = other.xCoordinate;
-        this.yCoordinate = other.xCoordinate;
+        this.yCoordinate = other.yCoordinate;
     }
         
  /* Getters */
