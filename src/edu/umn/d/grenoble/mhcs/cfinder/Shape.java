@@ -23,9 +23,7 @@ public abstract class Shape {
                 Layout layout;
                 final int MinBoxNeeded = 16;
                 final int MinBoxSideLen = 5;
-                if (count < MinBoxNeeded) { 
-                    // not enough to make a full box
-                    layout = new Layout(MinBoxSideLen,MinBoxSideLen);
+                if (count < MinBoxNeeded) {
                     /* 14 13 12 11 10
                      * 15          9
                      * 16          8
@@ -34,6 +32,19 @@ public abstract class Shape {
                      */
                     final int[] xPositions = new int[]{0,0,1,2,3,4,4,4,4,4,3,2,1,0,0,0};
                     final int[] yPositions = new int[]{1,0,0,0,0,0,1,2,3,4,4,4,4,4,3,2};
+                    int width = 0;
+                    int height = 0;
+                    for(int i = 0; i < count; i+=1){
+                        if(xPositions[i] > width){
+                            width = xPositions[i]; 
+                        }
+                        if(xPositions[i] > height){
+                            height = yPositions[i]; 
+                        }
+                    }
+
+                    // not enough to make a full box
+                    layout = new Layout(width + 1, height + 1);
                     for(int i = 0; i < count; i+=1){
                         layout.set(xPositions[i], yPositions[i], true);
                     }

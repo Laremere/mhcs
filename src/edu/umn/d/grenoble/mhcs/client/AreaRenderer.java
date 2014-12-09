@@ -43,9 +43,13 @@ public class AreaRenderer {
     private Area currentView;
     private Area splitView;
     
-    private int tileSize = 10;
-    private float viewX;
-    private float viewY;
+    final private int tileSizeMin = 10;
+    final private int tileSizeMax = 70;
+    final private int tileSizeStep = 10;
+    private int tileSize = this.tileSizeMin;
+    
+    private float viewX = 0.5f;
+    private float viewY = 0.5f;
     
     public AreaRenderer(final MarsHabitatConfigurationSystem mhcs) {
         // Preload images
@@ -107,17 +111,35 @@ public class AreaRenderer {
                         }
                     }    
                 } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
-                    
+                    areaRenderer.tileSize += areaRenderer.tileSizeStep;
+                    if (areaRenderer.tileSize > areaRenderer.tileSizeMax){
+                        areaRenderer.tileSize = areaRenderer.tileSizeMax;
+                    }
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomOut){
-                    
+                    areaRenderer.tileSize -= areaRenderer.tileSizeStep;
+                    if (areaRenderer.tileSize < areaRenderer.tileSizeMin){
+                        areaRenderer.tileSize = areaRenderer.tileSizeMin;
+                    }                    
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveUp){
-                    
+                    areaRenderer.viewY -= 1.0f / areaRenderer.tileSize;
+                    if (areaRenderer.viewY < 0){
+                        areaRenderer.viewY = 0;
+                    }
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveDown){
-                    
+                    areaRenderer.viewY += 1.0f / areaRenderer.tileSize;
+                    if (areaRenderer.viewY > 0){
+                        areaRenderer.viewY = 1;
+                    }                    
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveLeft){
-                    
+                    areaRenderer.viewX -= 1.0f / areaRenderer.tileSize;
+                    if (areaRenderer.viewX < 0){
+                        areaRenderer.viewX = 0;
+                    }
                 }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveRight){
-                    
+                    areaRenderer.viewX += 1.0f / areaRenderer.tileSize;
+                    if (areaRenderer.viewX > 1){
+                        areaRenderer.viewX = 1;
+                    }
                 }
                 
                 areaRenderer.RenderArea();
@@ -158,10 +180,10 @@ public class AreaRenderer {
         if (this.currentView == null){
             ctx.drawImage(this.images.get(this.background), 0, 0, Area.Width * this.tileSize, Area.Height * this.tileSize);
         } else if (this.splitView == null){
-            this.RenderModules(0, canvasWidth, 0, canvasHeight, this.currentView, 0, 0, ctx);    
+            this.RenderModules(0, canvasWidth, 0, canvasHeight, this.currentView, ctx);    
         } else {
-            this.RenderModules(0, canvasWidth / 2, 0, canvasHeight, this.currentView, 0, 0, ctx);
-            this.RenderModules(canvasWidth / 2, canvasWidth, 0, canvasHeight, this.splitView, 0, 0, ctx);
+            this.RenderModules(0, canvasWidth / 2, 0, canvasHeight, this.currentView, ctx);
+            this.RenderModules(canvasWidth / 2, canvasWidth, 0, canvasHeight, this.splitView, ctx);
         }
         
         
@@ -169,7 +191,7 @@ public class AreaRenderer {
     
     private void RenderModules(final int canvasXmin, final int canvasXmax, 
             final int canvasYmin, final int canvasYmax,
-            final Area area, final float xMin, final float yMin, final Context2d ctx){
+            final Area area, final Context2d ctx){
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(canvasXmin, canvasYmin);
@@ -179,13 +201,22 @@ public class AreaRenderer {
         ctx.moveTo(canvasXmin, canvasYmin);
         ctx.clip();
 
-        ctx.drawImage(this.images.get(this.background), canvasXmin, canvasYmin, Area.Width * tileSize, Area.Height * tileSize);
+        int viewWidth = canvasXmax - canvasXmin;
+        int viewHeight = canvasYmax - canvasYmin;
+
+        int mapWidth = this.tileSize * Area.Width;
+        int mapHeight = this.tileSize * Area.Height;
+
+        int xMin = Math.round((mapWidth - viewWidth) * this.viewX);
+        int yMin = Math.round((mapHeight - viewHeight) * this.viewY);
+        
+        ctx.drawImage(this.images.get(this.background), canvasXmin, canvasYmin, mapWidth, mapHeight);
         for (Module module : this.currentView.getModules()) {
             ctx.drawImage(
                     this.images.get(module.getType().getImageUrl()),
-                    (module.getX() - 1) * tileSize + canvasXmin, 
-                    (Area.Height - module.getY()) * tileSize + canvasYmin,
-                    tileSize, tileSize);
+                    (module.getX() - 1) * this.tileSize + canvasXmin + xMin, 
+                    (Area.Height - module.getY()) * this.tileSize + canvasYmin + yMin,
+                    this.tileSize, this.tileSize);
         }
         
         ctx.restore();
