@@ -32,7 +32,11 @@ public class AreaHolder {
             }
         }
         String newList = moduleStore.getItem(areaListName);
-        newList += "," + name;
+        if(newList == null || newList.equals("") || newList.startsWith("null") ){
+            newList = name;
+        } else {
+            newList += "," + name;   
+        }
         moduleStore.setItem(areaListName, newList);
     }
     
