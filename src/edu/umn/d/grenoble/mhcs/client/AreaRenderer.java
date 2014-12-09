@@ -17,6 +17,7 @@ import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
+import edu.umn.d.grenoble.mhcs.cfinder.Layout;
 import edu.umn.d.grenoble.mhcs.cfinder.Shape;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -226,7 +227,7 @@ public class AreaRenderer {
         ctx.restore();
     }
     
-    private void RenderLayout(final Shape.Layout layout){
+    private void RenderLayout(final Layout layout){
         
     }
 }

@@ -29,6 +29,7 @@
   <source path='client'/>
   <source path='modules'/>
   <source path='bus'/>
+  <source path='cfinder'/>
 
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
