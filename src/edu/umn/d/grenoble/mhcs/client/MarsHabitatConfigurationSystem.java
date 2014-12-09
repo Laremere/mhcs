@@ -1,18 +1,15 @@
 package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-
-import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
-import edu.umn.d.grenoble.mhcs.bus.Bus;
-import edu.umn.d.grenoble.mhcs.modules.Area;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -48,10 +45,6 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
     
     //Called by areaRenderer, when the images are preloaded.
     public void Begin() {
-        Tab[] tabs = new Tab[] {
-                new AddModulesPanel(),
-        };
-        
         DockPanel dockPanel = new DockPanel();
 
         { 
@@ -69,7 +62,16 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         }
         { 
             //South
+            final Tab[] tabs = new Tab[] {
+                new AddModulesPanel(),
+            };
             TabPanel tabPanel = new TabPanel();
+            tabPanel.addSelectionHandler(new SelectionHandler<Integer>(){
+                @Override
+                public void onSelection(final SelectionEvent<Integer> event) {
+                    tabs[event.getSelectedItem()].switchedTo();
+                }
+            });
             for (Tab tab : tabs){
                 tabPanel.add(tab.getPanel(), tab.getTabName());
             }
@@ -78,7 +80,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
 
         }   
 
-        dockPanel.add(areaRenderer.GetCanvas(), DockPanel.CENTER);
+        dockPanel.add(this.areaRenderer.GetCanvas(), DockPanel.CENTER);
         RootPanel.get().add(dockPanel);
     }
     
