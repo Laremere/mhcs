@@ -64,7 +64,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
         Area area = new Area();
         Bus.bus.fireEvent(new AreaUpdateEvent(area));
         
-        AddModulesPanel thisPanel = new AddModulesPanel();               
+        AddModulesPanel thisPanel = new AddModulesPanel();   
         this.tabPanel.add(thisPanel.getAddModulesPanel(), new String("Add modules"));
         this.tabPanel.add(new FlowPanel(), "Minimum Configurations");
         this.tabPanel.add(new ConfigPanel().GetPanel(), "Make Configuration");

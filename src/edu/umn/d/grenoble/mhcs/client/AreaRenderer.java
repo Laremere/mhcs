@@ -97,8 +97,29 @@ public class AreaRenderer {
         Bus.bus.addHandler(AreaUpdateEvent.TYPE, new AreaUpdateEventHandler(){
             @Override
             public void onEvent(final AreaUpdateEvent event) {
-                areaRenderer.currentView = new Area(event.getArea());
-                areaRenderer.splitView = new Area(event.getSideArea());
+                if (event.getMoveType() == null){
+                    Area view1 = event.getArea();
+                    Area view2 = event.getSideArea();
+                    if (view1 != null){
+                        areaRenderer.currentView = new Area(view1);
+                        if (view2 != null){
+                            areaRenderer.splitView = new Area(view2);
+                        }
+                    }    
+                } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
+                    
+                }else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomOut){
+                    
+                }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveUp){
+                    
+                }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveDown){
+                    
+                }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveLeft){
+                    
+                }else if (event.getMoveType() == AreaUpdateEvent.MoveType.MoveRight){
+                    
+                }
+                
                 areaRenderer.RenderArea();
             }            
         });
@@ -129,16 +150,18 @@ public class AreaRenderer {
      * @param area - The canvas that the modules are to be added to
      */
     private void RenderArea() {
-        Context2d context = this.canvas.getContext2d();
+        Context2d ctx = this.canvas.getContext2d();
         
-        context.setFillStyle("#444444");
-        context.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.setFillStyle("#444444");
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         
-        if (this.splitView == null){
-            this.RenderModules(0, canvasWidth, 0, canvasHeight, this.currentView, 0, 0, context);    
+        if (this.currentView == null){
+            ctx.drawImage(this.images.get(this.background), 0, 0, Area.Width * this.tileSize, Area.Height * this.tileSize);
+        } else if (this.splitView == null){
+            this.RenderModules(0, canvasWidth, 0, canvasHeight, this.currentView, 0, 0, ctx);    
         } else {
-            this.RenderModules(0, canvasWidth / 2, 0, canvasHeight, this.currentView, 0, 0, context);
-            this.RenderModules(canvasWidth / 2, canvasWidth, 0, canvasHeight, this.splitView, 0, 0, context);
+            this.RenderModules(0, canvasWidth / 2, 0, canvasHeight, this.currentView, 0, 0, ctx);
+            this.RenderModules(canvasWidth / 2, canvasWidth, 0, canvasHeight, this.splitView, 0, 0, ctx);
         }
         
         
