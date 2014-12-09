@@ -17,6 +17,7 @@ import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
+import edu.umn.d.grenoble.mhcs.cfinder.Shape;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
 import edu.umn.d.grenoble.mhcs.modules.Type;
@@ -103,13 +104,15 @@ public class AreaRenderer {
         Bus.bus.addHandler(AreaUpdateEvent.TYPE, new AreaUpdateEventHandler(){
             @Override
             public void onEvent(final AreaUpdateEvent event) {
-                if (event.getMoveType() == null){
+                if (event.getArea() != null){
                     areaRenderer.currentView = new Area(event.getArea());
                     if (event.getSideArea() != null){
                         areaRenderer.splitView = new Area(event.getSideArea());
                     } else {
                         areaRenderer.splitView = null;
                     }
+                } else if (event.getLayout() != null) {
+                    areaRenderer.RenderLayout(event.getLayout());
                 } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
                     areaRenderer.tileSize += areaRenderer.tileSizeStep;
                     if (areaRenderer.tileSize > areaRenderer.tileSizeMax){
@@ -221,5 +224,9 @@ public class AreaRenderer {
         }
         
         ctx.restore();
+    }
+    
+    private void RenderLayout(final Shape.Layout layout){
+        
     }
 }
