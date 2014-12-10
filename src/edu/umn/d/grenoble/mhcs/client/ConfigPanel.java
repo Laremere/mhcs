@@ -1,6 +1,9 @@
 package edu.umn.d.grenoble.mhcs.client;
 
 
+import java.util.Map;
+import java.util.HashMap;
+
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -122,6 +125,7 @@ public class ConfigPanel extends Tab {
         int plainCountUse;
         Label spotCount;
         FlowPanel panel = new FlowPanel();
+        Widget wpanel = panel;
         final StepLayout stepLayout = this;
         StepLayout(Area area_){
             area = area_;
@@ -135,10 +139,9 @@ public class ConfigPanel extends Tab {
             }
             if ( plainCount < 3){
                 Window.alert("Not enough functional plain modules to make a configuration");
-                configPanel.holder.setWidget(new StepStart().getPanel());
+                wpanel = new StepStart().getPanel();
                 return;
             }
-            plainCount = 40;
             plainCountUse = plainCount;
             {
                 final ListBox layouts = new ListBox();
@@ -190,8 +193,20 @@ public class ConfigPanel extends Tab {
                 panel.add(new Label("Number to Use"));
                 panel.add(numPlain);
             }
-            spotCount = new Label();
-            panel.add(spotCount);
+            {
+                spotCount = new Label();
+                panel.add(spotCount);
+            }
+            {
+                final Button next = new Button("Next");
+                next.addClickHandler(new ClickHandler(){
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        configPanel.holder.setWidget(new CountOfEachStep(stepLayout.area, stepLayout.layout).getPanel());
+                    }
+                });
+                panel.add(next);
+            }
             
             updateLayout();
         }
@@ -203,7 +218,79 @@ public class ConfigPanel extends Tab {
         }
         
         Widget getPanel(){
-            return panel;
+            return wpanel;
+        }
+    }
+    
+    class CountOfEachStep{
+        Area area;
+        Layout layout;
+        FlowPanel panel = new FlowPanel();
+        Widget wpanel = panel;
+        Map<Type, Integer> counts = new HashMap<Type, Integer>();
+        Label countLabel = new Label();
+        Button next = new Button("next");
+        
+        public CountOfEachStep(Area area_, Layout layout_){
+            area = area_;
+            layout = layout_;
+            panel.setStyleName("flowPanel_inline");
+            
+            for (Type t: Type.values()){
+                if (t != Type.PLAIN && t != Type.INVALID){
+                    int count = 0;
+                    for (Module m: area.getModules()){
+                        if(m.getType() == t && m.getStatus() == Status.GOOD){
+                            count += 1;
+                        }
+                    }
+                    if (count < t.getMinCount()){
+                        Window.alert("Not enough " + t.getTypeName() + " modules for a configuration!");
+                        wpanel = new StepStart().getPanel();
+                        return;
+                    }
+                    
+                    counts.put(t, count);
+                
+                    Label l = new Label(t.getTypeName());
+                
+                    final ListBox numOf = new ListBox();
+                    for (int i = 0; count - i >=  t.getMinCount(); i+= 1){
+                        numOf.addItem("" + (count - i));
+                    }
+                    final Type ft = t;
+                    final int TotalCount = count;
+                    numOf.addChangeHandler(new ChangeHandler(){
+                        @Override
+                        public void onChange(ChangeEvent event) {
+                            counts.put(ft, TotalCount - numOf.getSelectedIndex());
+                            updateCount();
+                        }
+                    });
+                    
+                    panel.add(l);
+                    panel.add(numOf);
+                }
+            }
+            panel.add(countLabel);
+            panel.add(next);
+            updateCount();
+        }
+        
+        void updateCount(){
+            int sumOfModules = 0;
+            for (Type t: Type.values()){
+                if (counts.containsKey(t)){
+                    sumOfModules += counts.get(t);
+                }
+            }
+            int out_of = layout.SpotCount();
+            next.setEnabled(sumOfModules <= out_of);
+            countLabel.setText("Using " + sumOfModules + " out of " + out_of + " module spots.");
+        }
+        
+        Widget getPanel(){
+            return wpanel;
         }
     }
 }
