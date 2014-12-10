@@ -66,6 +66,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
                 new AddModulesPanel(),
                 new SplitViewPanel(),
                 new ConfigPanel(),
+                new ImportPanel(),
             };
             TabPanel tabPanel = new TabPanel();
             tabPanel.addSelectionHandler(new SelectionHandler<Integer>(){
