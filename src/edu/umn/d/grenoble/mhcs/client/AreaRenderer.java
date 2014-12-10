@@ -6,6 +6,12 @@ import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -55,6 +61,8 @@ public class AreaRenderer {
     
     private float viewX = 0;
     private float viewY = 1;
+    
+    private boolean MouseDown = false;
     
     public AreaRenderer(final MarsHabitatConfigurationSystem mhcs) {
         // Preload images
@@ -155,18 +163,39 @@ public class AreaRenderer {
             }            
         });
         
-        this.canvas.addClickHandler(new ClickHandler(){
-
+        this.canvas.addMouseDownHandler(new MouseDownHandler(){
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onMouseDown(final MouseDownEvent event) {
+                areaRenderer.MouseDown = true;
                 areaRenderer.ClickEvent(event.getRelativeX(areaRenderer.canvas.getElement()), 
-                        event.getRelativeY(areaRenderer.canvas.getElement()));
+                        event.getRelativeY(areaRenderer.canvas.getElement()),
+                        AreaClickEvent.MouseType.Pressed);
+            }            
+        });
+        this.canvas.addMouseMoveHandler(new MouseMoveHandler(){
+            @Override
+            public void onMouseMove(final MouseMoveEvent event) {
+                if(areaRenderer.MouseDown){
+                    areaRenderer.ClickEvent(event.getRelativeX(areaRenderer.canvas.getElement()), 
+                            event.getRelativeY(areaRenderer.canvas.getElement()),
+                            AreaClickEvent.MouseType.Dragged);
+                }
+            }
+        });
+        this.canvas.addMouseUpHandler(new MouseUpHandler(){
+            @Override
+            public void onMouseUp(final MouseUpEvent event) {
+                areaRenderer.MouseDown = false;
+                areaRenderer.ClickEvent(event.getRelativeX(areaRenderer.canvas.getElement()), 
+                        event.getRelativeY(areaRenderer.canvas.getElement()),
+                        AreaClickEvent.MouseType.Released);
             }            
         });
         
+        
     }
     
-    private void ClickEvent(int relX, int relY){
+    private void ClickEvent(final int relX, final int relY, final AreaClickEvent.MouseType mt){
         int mapWidth = this.tileSize * Area.Width;
         int mapHeight = this.tileSize * Area.Height;
 
@@ -176,7 +205,7 @@ public class AreaRenderer {
         
         int x = (relX - xReference) / this.tileSize + 1;
         int y = Area.Height - (relY - yReference) / this.tileSize;
-        Bus.bus.fireEvent(new AreaClickEvent(x, y));
+        Bus.bus.fireEvent(new AreaClickEvent(x, y, mt));
         
     }
     
