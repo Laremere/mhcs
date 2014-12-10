@@ -8,11 +8,22 @@ public class AreaClickEvent extends GwtEvent<AreaClickEventHandler>{
     
     private int xcoordinate;
     private int ycoordinate;
+    private MouseType type;
     
-    public AreaClickEvent(final int x, final int y){
+    public enum MouseType {
+        Pressed,
+        Released,
+        Dragged;
+    }
+    
+    public AreaClickEvent(final int x, final int y, MouseType type){
         this.xcoordinate = x;
         this.ycoordinate = y;
+        this.type = type;
+        
     }
+    
+
     
     public int getX() {
         return this.xcoordinate;
@@ -20,6 +31,10 @@ public class AreaClickEvent extends GwtEvent<AreaClickEventHandler>{
     
     public int getY() {
         return this.ycoordinate;
+    }
+    
+    public MouseType getMouseType() {
+        return this.type;
     }
 
     @Override
