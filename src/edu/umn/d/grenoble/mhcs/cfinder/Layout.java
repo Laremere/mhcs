@@ -18,10 +18,18 @@ public class Layout{
     }
     
     public boolean isSpot(final int x, final int y){
-        return !this.get(x, y) && (
+        return (!this.get(x, y)) && (
             this.get(x + 1, y) || this.get(x - 1, y) ||
             this.get(x, y + 1) || this.get(x, y - 1)
             );
+    }
+    
+    public int getWidth(){
+        return this.width;
+    }
+    
+    public int getHeight(){
+        return this.height;
     }
     
     void set(final int x, final int y, final boolean value){

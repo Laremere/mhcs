@@ -2,6 +2,7 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -114,6 +115,7 @@ public class AreaRenderer {
                     }
                 } else if (event.getLayout() != null) {
                     areaRenderer.RenderLayout(event.getLayout());
+                    return;
                 } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
                     areaRenderer.tileSize += areaRenderer.tileSizeStep;
                     if (areaRenderer.tileSize > areaRenderer.tileSizeMax){
@@ -144,6 +146,9 @@ public class AreaRenderer {
                     if (areaRenderer.viewX > 1){
                         areaRenderer.viewX = 1;
                     }
+                } else {
+                    areaRenderer.RenderEmpty();
+                    return;
                 }
                 
                 areaRenderer.RenderArea();
@@ -216,7 +221,7 @@ public class AreaRenderer {
         
         
         ctx.drawImage(this.images.get(this.background), xReference, yReference, mapWidth, mapHeight);
-        for (Module module : this.currentView.getModules()) {
+        for (Module module : area.getModules()) {
             ctx.drawImage(
                     this.images.get(module.getType().getImageUrl()),
                     (module.getX() - 1) * this.tileSize + xReference, 
@@ -228,6 +233,42 @@ public class AreaRenderer {
     }
     
     private void RenderLayout(final Layout layout){
+        Context2d ctx = this.canvas.getContext2d();
         
+        ctx.setFillStyle("#ffffff");
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        
+        final int BoxWidth = Math.min(canvasWidth / (layout.getWidth() + 2), canvasHeight / (layout.getHeight() + 2));
+        
+        for(int i = -1; i <= layout.getWidth(); i += 1) {
+            for(int j = -1; j <= layout.getHeight(); j+= 1){
+                int x = (i + 1) * BoxWidth;
+                int y = canvasHeight -  (j + 2) * BoxWidth;
+                
+                ctx.setFillStyle("#000000");
+                ctx.fillRect(x, y, BoxWidth, BoxWidth);
+                
+                if(layout.get(i, j)){
+                    ctx.drawImage(this.images.get(Type.PLAIN.getImageUrl()), x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
+                } else if (layout.isSpot(i, j)){
+                    ctx.setFillStyle("#004400");
+                    ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
+                } else {
+                    ctx.setFillStyle("#444444");                    
+                    ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
+                }
+            }
+        }
+    }
+    
+    private void RenderEmpty(){
+        Context2d ctx = this.canvas.getContext2d();
+        
+        ctx.setFillStyle("#444444");
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.setFillStyle("#ffffff");
+        ctx.setTextAlign(Context2d.TextAlign.CENTER);
+        ctx.setFont("bold 30px sans-serif");
+        ctx.fillText("Mars Habitat Configuration System", canvasWidth / 2, canvasHeight / 2);
     }
 }

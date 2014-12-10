@@ -54,3 +54,9 @@ h1 {
 	font-size: 24pt;
 	font-weight: bold;
 }
+
+.flowPanel_inline > *
+{
+    display:inline;
+    padding-left: 5px;
+}
