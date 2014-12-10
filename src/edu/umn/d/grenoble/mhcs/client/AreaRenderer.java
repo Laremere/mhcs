@@ -218,7 +218,7 @@ public class AreaRenderer {
         
         
         ctx.drawImage(this.images.get(this.background), xReference, yReference, mapWidth, mapHeight);
-        for (Module module : this.currentView.getModules()) {
+        for (Module module : area.getModules()) {
             ctx.drawImage(
                     this.images.get(module.getType().getImageUrl()),
                     (module.getX() - 1) * this.tileSize + xReference, 
