@@ -61,6 +61,10 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
             FlowPanel eastPanel = new FlowPanel(); 
             eastPanel.add(new WeatherPanel().getWeatherPanel());
             eastPanel.add(new SoundOutput().getMuteButton());
+            Label mapButtonLabel = new Label("Map Control: ");
+            mapButtonLabel.setStyleName("controlButton");
+            eastPanel.add(mapButtonLabel);
+            eastPanel.add(new MapControlPanel().getMapControlPanel());
             dockPanel.add(eastPanel, DockPanel.EAST);
         }
         { 
