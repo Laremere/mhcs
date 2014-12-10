@@ -2,6 +2,7 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -234,10 +235,16 @@ public class AreaRenderer {
         ctx.setFillStyle("#ffffff");
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         
+        final int BoxWidth = Math.min(canvasWidth / (layout.getWidth() + 2), canvasHeight / (layout.getHeight() + 2));
+        
         for(int i = -1; i <= layout.getWidth(); i += 1) {
             for(int j = -1; j <= layout.getHeight(); j+= 1){
-                int x = (i + 1) * 10;
-                int y = canvasHeight -  (j + 2) * 10;
+                int x = (i + 1) * BoxWidth;
+                int y = canvasHeight -  (j + 2) * BoxWidth;
+                
+                ctx.setFillStyle("#000000");
+                ctx.fillRect(x, y, BoxWidth, BoxWidth);
+                
                 if(layout.get(i, j)){
                     ctx.setFillStyle("#440000");
                 } else if (layout.isSpot(i, j)){
@@ -245,7 +252,7 @@ public class AreaRenderer {
                 } else {
                     ctx.setFillStyle("#444444");                    
                 }
-                ctx.fillRect(x, y, 10, 10);
+                ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
             }
         }
     }
