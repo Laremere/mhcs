@@ -159,11 +159,24 @@ public class AreaRenderer {
 
             @Override
             public void onClick(final ClickEvent event) {
-                int x = event.getRelativeX(areaRenderer.canvas.getElement()) / areaRenderer.tileSize + 1;
-                int y = Area.Height - event.getRelativeY(areaRenderer.canvas.getElement()) / areaRenderer.tileSize;
-                Bus.bus.fireEvent(new AreaClickEvent(x, y));
+                areaRenderer.ClickEvent(event.getRelativeX(areaRenderer.canvas.getElement()), 
+                        event.getRelativeY(areaRenderer.canvas.getElement()));
             }            
         });
+        
+    }
+    
+    private void ClickEvent(int relX, int relY){
+        int mapWidth = this.tileSize * Area.Width;
+        int mapHeight = this.tileSize * Area.Height;
+
+        int xReference = 0 - Math.round((mapWidth - canvasWidth) * this.viewX);
+        int yReference = 0 - Math.round((mapHeight - canvasHeight) * this.viewY);
+
+        
+        int x = (relX - xReference) / this.tileSize + 1;
+        int y = Area.Height - (relY - yReference) / this.tileSize;
+        Bus.bus.fireEvent(new AreaClickEvent(x, y));
         
     }
     

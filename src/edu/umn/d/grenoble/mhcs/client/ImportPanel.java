@@ -52,6 +52,72 @@ public class ImportPanel extends Tab {
         });
         
         panel.add(importGps);
+        
+        
+        Button importFull = new Button("Load Full Tests");
+        importFull.addClickHandler(new ClickHandler(){
+            @Override
+            public void onClick(ClickEvent event) {
+                for(int curCase = 0; curCase < 100; curCase += 1){
+                    String url= URL.encode("http://d.umn.edu/~redi0068/mhcs/testFull.php?case=" + curCase);
+                    
+                    JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+                    jsonp.setCallbackParam("callback");
+                    
+                    final Integer thisCase = curCase;
+                    jsonp.requestString(url,  new AsyncCallback<String>() {
+                        public void onFailure(final Throwable caught){
+                            Window.alert("Json onFailure" + caught.getMessage());
+                        }
+                      
+                        @Override          
+                        public void onSuccess(final String result) {
+                            if (result.equals("")){
+                                return;
+                            }
+                            Area area = new Area(result); 
+                            AreaHolder.saveArea("Full Imported Number " + thisCase, area);
+                            Bus.bus.fireEvent( new AreaUpdateEvent( area ));
+                        }     
+                    });   
+                }
+            }
+        });
+        
+        panel.add(importFull);
+        
+        
+        Button importPartial = new Button("Load Partial Tests");
+        importPartial.addClickHandler(new ClickHandler(){
+            @Override
+            public void onClick(ClickEvent event) {
+                for(int curCase = 0; curCase < 100; curCase += 1){
+                    String url= URL.encode("http://d.umn.edu/~redi0068/mhcs/testPartial.php?case=" + curCase);
+                    
+                    JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+                    jsonp.setCallbackParam("callback");
+                    
+                    final Integer thisCase = curCase;
+                    jsonp.requestString(url,  new AsyncCallback<String>() {
+                        public void onFailure(final Throwable caught){
+                            Window.alert("Json onFailure" + caught.getMessage());
+                        }
+                      
+                        @Override          
+                        public void onSuccess(final String result) {
+                            if (result.equals("")){
+                                return;
+                            }
+                            Area area = new Area(result); 
+                            AreaHolder.saveArea("Partial Imported Number " + thisCase, area);
+                            Bus.bus.fireEvent( new AreaUpdateEvent( area ));
+                        }     
+                    });   
+                }
+            }
+        });
+        
+        panel.add(importPartial);
     }
     
     @Override
