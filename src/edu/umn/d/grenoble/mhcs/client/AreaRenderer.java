@@ -114,6 +114,7 @@ public class AreaRenderer {
                     }
                 } else if (event.getLayout() != null) {
                     areaRenderer.RenderLayout(event.getLayout());
+                    return;
                 } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
                     areaRenderer.tileSize += areaRenderer.tileSizeStep;
                     if (areaRenderer.tileSize > areaRenderer.tileSizeMax){
@@ -228,6 +229,24 @@ public class AreaRenderer {
     }
     
     private void RenderLayout(final Layout layout){
+        Context2d ctx = this.canvas.getContext2d();
         
+        ctx.setFillStyle("#ffffff");
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        
+        for(int i = -1; i <= layout.getWidth(); i += 1) {
+            for(int j = -1; j <= layout.getHeight(); j+= 1){
+                int x = (i + 1) * 10;
+                int y = canvasHeight -  (j + 2) * 10;
+                if(layout.get(i, j)){
+                    ctx.setFillStyle("#440000");
+                } else if (layout.isSpot(i, j)){
+                    ctx.setFillStyle("#004400");
+                } else {
+                    ctx.setFillStyle("#444444");                    
+                }
+                ctx.fillRect(x, y, 10, 10);
+            }
+        }
     }
 }
