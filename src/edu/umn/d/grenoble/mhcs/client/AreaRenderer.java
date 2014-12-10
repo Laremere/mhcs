@@ -249,13 +249,14 @@ public class AreaRenderer {
                 ctx.fillRect(x, y, BoxWidth, BoxWidth);
                 
                 if(layout.get(i, j)){
-                    ctx.setFillStyle("#440000");
+                    ctx.drawImage(this.images.get(Type.PLAIN.getImageUrl()), x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
                 } else if (layout.isSpot(i, j)){
                     ctx.setFillStyle("#004400");
+                    ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
                 } else {
                     ctx.setFillStyle("#444444");                    
+                    ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
                 }
-                ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
             }
         }
     }

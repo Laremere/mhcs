@@ -9,7 +9,7 @@ public abstract class Shape {
             public Layout getLayout(final int count, final float ratio) {
                 Layout layout = new Layout(count, 1);
                 for (int i = 0; i < count; i += 1){
-                    layout.set(i, 1, true);
+                    layout.set(i, 0, true);
                 }
                 return layout;
             }
