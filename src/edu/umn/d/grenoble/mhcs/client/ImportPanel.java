@@ -43,7 +43,7 @@ public class ImportPanel extends Tab {
                                 return;
                             }
                             Area area = new Area(result); 
-                            AreaHolder.saveArea("Impoted Number " + thisCase, area);
+                            AreaHolder.saveArea("Imported Number " + thisCase, area);
                             Bus.bus.fireEvent( new AreaUpdateEvent( area ));
                         }     
                     });   
