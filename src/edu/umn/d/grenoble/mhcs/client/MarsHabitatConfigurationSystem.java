@@ -11,6 +11,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
+import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
+import edu.umn.d.grenoble.mhcs.bus.Bus;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  * @author Scott Redig
@@ -72,6 +75,7 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
             tabPanel.addSelectionHandler(new SelectionHandler<Integer>(){
                 @Override
                 public void onSelection(final SelectionEvent<Integer> event) {
+                    Bus.bus.fireEvent( new AreaUpdateEvent());
                     tabs[event.getSelectedItem()].switchedTo();
                 }
             });

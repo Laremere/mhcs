@@ -146,6 +146,9 @@ public class AreaRenderer {
                     if (areaRenderer.viewX > 1){
                         areaRenderer.viewX = 1;
                     }
+                } else {
+                    areaRenderer.RenderEmpty();
+                    return;
                 }
                 
                 areaRenderer.RenderArea();
@@ -255,5 +258,16 @@ public class AreaRenderer {
                 ctx.fillRect(x + 1, y + 1, BoxWidth - 2, BoxWidth - 2);
             }
         }
+    }
+    
+    private void RenderEmpty(){
+        Context2d ctx = this.canvas.getContext2d();
+        
+        ctx.setFillStyle("#444444");
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.setFillStyle("#ffffff");
+        ctx.setTextAlign(Context2d.TextAlign.CENTER);
+        ctx.setFont("bold 30px sans-serif");
+        ctx.fillText("Mars Habitat Configuration System", canvasWidth / 2, canvasHeight / 2);
     }
 }

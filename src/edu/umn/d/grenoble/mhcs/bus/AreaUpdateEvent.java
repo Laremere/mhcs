@@ -1,6 +1,7 @@
 package edu.umn.d.grenoble.mhcs.bus;
 
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.user.client.Window;
 
 import edu.umn.d.grenoble.mhcs.cfinder.Layout;
 import edu.umn.d.grenoble.mhcs.cfinder.Shape;
@@ -23,6 +24,10 @@ public class AreaUpdateEvent extends GwtEvent<AreaUpdateEventHandler>{
     private Area sideArea;
     private MoveType moveType;
     private Layout layout;
+    
+    public AreaUpdateEvent(){
+        
+    }
     
     public AreaUpdateEvent(final Area area_){
         this.area = area_;
