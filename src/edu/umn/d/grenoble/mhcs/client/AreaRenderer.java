@@ -315,9 +315,15 @@ public class AreaRenderer {
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         for(int x = 0; x < plan.getWidth(); x += 1){
             for(int y = 0; y < plan.getHeight(); y+= 1){
+                Plan.Wing w = plan.getWing(x, y);
+                if (w != null){
+                    ctx.setFillStyle(w.color);
+                    ctx.fillRect(x * BoxWidth, canvasHeight - (y + 1)* BoxWidth, BoxWidth, BoxWidth);
+                }
+                
                 Type t = plan.get(x, y);
                 if (t != null){
-                    ctx.drawImage(this.images.get(t.getImageUrl()), x * BoxWidth, canvasHeight - (y + 1)* BoxWidth, BoxWidth, BoxWidth);
+                    ctx.drawImage(this.images.get(t.getImageUrl()), x * BoxWidth + 1, canvasHeight - (y + 1)* BoxWidth + 1, BoxWidth - 2, BoxWidth - 2);
                 }
             }
         }
