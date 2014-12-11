@@ -304,8 +304,13 @@ public class ConfigPanel extends Tab {
             next.setEnabled(sumOfModules <= out_of);
             countLabel.setText("Using " + sumOfModules + " out of " + out_of + " module spots.");
             
-            Plan plan = new Plan(this.layout, this.counts);
-            Bus.bus.fireEvent( new AreaUpdateEvent( plan ));
+            if (sumOfModules <= out_of){
+                Plan plan = new Plan(this.layout, this.counts);
+                Bus.bus.fireEvent( new AreaUpdateEvent( plan ));               
+            } else {
+                Bus.bus.fireEvent( new AreaUpdateEvent( this.layout));
+            }
+
 
         }
         

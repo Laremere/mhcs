@@ -119,8 +119,9 @@ public class Plan {
             
             this.setWing(spots.get(0).x, spots.get(0).y, Wing.Airlock);
             this.set(spots.get(0).x, spots.get(0).y, Type.AIRLOCK);
+            counts.put(Type.AIRLOCK, counts.get(Type.AIRLOCK) - 1);
 
-            if(counts.get(Type.AIRLOCK) >= 2){
+            if(counts.get(Type.AIRLOCK) > 0){
                 List<Integer> open = new ArrayList<Integer>();
                 for(int i = this.height - 1; i >= 0; i-= 1){
                     if(this.getWing(0, i) == Wing.Unset){
@@ -129,8 +130,9 @@ public class Plan {
                 }
                 this.setWing(0, open.get(open.size() / 2), Wing.Airlock);
                 this.set(0, open.get(open.size() / 2), Type.AIRLOCK);
+                counts.put(Type.AIRLOCK, counts.get(Type.AIRLOCK) - 1);
             }
-            if(counts.get(Type.AIRLOCK) >= 3){
+            if(counts.get(Type.AIRLOCK) > 0){
                 List<Integer> open = new ArrayList<Integer>();
                 for(int i = 0; i < this.width; i+= 1){
                     if(this.getWing(i, 0) == Wing.Unset){
@@ -140,8 +142,9 @@ public class Plan {
                 int ax = open.get(open.size() / 2);
                 this.setWing(ax, 0, Wing.Airlock);
                 this.set(ax, 0, Type.AIRLOCK);
+                counts.put(Type.AIRLOCK, counts.get(Type.AIRLOCK) - 1);
             }
-            if(counts.get(Type.AIRLOCK) >= 4){
+            if(counts.get(Type.AIRLOCK) > 0){
                 List<Integer> open = new ArrayList<Integer>();
                 int ay = this.height - 1;
                 for(int i = 0; i < this.width; i+= 1){
@@ -152,6 +155,7 @@ public class Plan {
                 int ax = open.get(open.size() / 2);
                 this.setWing(ax, ay, Wing.Airlock);
                 this.set(ax, ay, Type.AIRLOCK);
+                counts.put(Type.AIRLOCK, counts.get(Type.AIRLOCK) - 1);
             }
             {
                 boolean lastWasAirlock = false;
@@ -172,7 +176,8 @@ public class Plan {
             {//Canteen and food
                 int foodPerCanteen = counts.get(Type.FOOD) / counts.get(Type.CANTEEN);
                 int extraFood = counts.get(Type.FOOD) % counts.get(Type.CANTEEN);
-                for(int i = 0; i < counts.get(Type.CANTEEN); i++){
+                int totalCanteenCount = counts.get(Type.CANTEEN);
+                for(int i = 0; i < totalCanteenCount; i++){
                     int food = foodPerCanteen;
                     if(extraFood > 0){
                         extraFood -= 1;
@@ -197,12 +202,205 @@ public class Plan {
                             this.set(spots.get(j), Type.CANTEEN);    
                         }
                     }
+                    counts.put(Type.CANTEEN, counts.get(Type.CANTEEN) - 1);
+                    counts.put(Type.FOOD, counts.get(Type.FOOD) - food);
                 }
-            }
+            } //Done with food
+            
+            { //Housing
+                int end = spots.size();
+                placementLoop:
+                while(end > 0 && counts.get(Type.DORMITORY) > 0){
+                    int start = end;
+                    int gyms = 0;
+                    int dorms = 1;
+                    int baths = 0;
+                    if (counts.get(Type.SANITATION) > 0){
+                        baths = 1;
+                    }
+                    if (counts.get(Type.DORMITORY) > 1){
+                        dorms = 2;
+                    }
+                    if (counts.get(Type.GYM) > 0){
+                        gyms += 1;
+                    }
+                    while (this.get(spots.get(start - 1)) == null && end - start < dorms + baths + gyms){
+                        start -= 1;
+                    }
+                    
+                    
+                    if(dorms == 1 && gyms + baths == 0){
+                        if(this.canFitBedroom(spots.get(start))){
+                            this.set(spots.get(start), Type.DORMITORY);   
+                        } else {
+                            end -= 1;
+                            continue placementLoop;
+                        }
+                    }
+                    if(dorms == 1 && baths == 1 && gyms == 0){
+                        if(this.canFitBedroom(spots.get(start)) && this.canFitBath(spots.get(start + 1))){
+                            this.set(spots.get(start), Type.DORMITORY);
+                            this.set(spots.get(start + 1), Type.SANITATION);
+                        } else if(this.canFitBedroom(spots.get(start + 1)) && this.canFitBath(spots.get(start))){
+                            this.set(spots.get(start + 1), Type.DORMITORY);
+                            this.set(spots.get(start), Type.SANITATION);                            
+                        } else {
+                            end -= 1;
+                            continue placementLoop;
+                        }
+                    }
+                    if(dorms == 2 && baths == 1 && gyms == 0){
+                        if(this.canFitBedroom(spots.get(start)) && this.canFitBath(spots.get(start + 1)) && this.canFitBedroom(spots.get(start + 2))){
+                            this.set(spots.get(start), Type.DORMITORY);
+                            this.set(spots.get(start + 1), Type.SANITATION);
+                            this.set(spots.get(start + 2), Type.DORMITORY);
+                        } else if (this.canFitBedroom(spots.get(start + 1)) && this.canFitBath(spots.get(start)) && this.canFitBedroom(spots.get(start + 2))){
+                            this.set(spots.get(start + 1), Type.DORMITORY);
+                            this.set(spots.get(start), Type.SANITATION);
+                            this.set(spots.get(start + 2), Type.DORMITORY);                            
+                        } else if (this.canFitBedroom(spots.get(start + 1)) && this.canFitBath(spots.get(start + 2)) && this.canFitBedroom(spots.get(start))){
+                            this.set(spots.get(start), Type.DORMITORY);
+                            this.set(spots.get(start + 2), Type.SANITATION);
+                            this.set(spots.get(start + 1), Type.DORMITORY);                                                        
+                        } else {
+                            end -= 1;
+                            continue placementLoop;
+                        }
+                    }
+                    if(dorms == 2 && baths == 1 && gyms == 1){
+                        if(this.canFitBedroom(spots.get(start)) && this.canFitBath(spots.get(start + 1)) && this.canFitBedroom(spots.get(start + 3))){
+                            this.set(spots.get(start), Type.DORMITORY);
+                            this.set(spots.get(start + 1), Type.SANITATION);
+                            this.set(spots.get(start + 2), Type.GYM);
+                            this.set(spots.get(start + 3), Type.DORMITORY);                                                        
+                        } else if (this.canFitBedroom(spots.get(start)) && this.canFitBath(spots.get(start + 2)) && this.canFitBedroom(spots.get(start + 3))){
+                            this.set(spots.get(start), Type.DORMITORY);
+                            this.set(spots.get(start + 1), Type.GYM);
+                            this.set(spots.get(start + 2), Type.SANITATION);
+                            this.set(spots.get(start + 3), Type.DORMITORY);                                                        
+                        } else if (this.canFitBedroom(spots.get(start + 2)) && this.canFitBath(spots.get(start + 1)) && this.canFitBedroom(spots.get(start + 3))){
+                            this.set(spots.get(start + 0), Type.GYM);
+                            this.set(spots.get(start + 1), Type.SANITATION);
+                            this.set(spots.get(start + 2), Type.DORMITORY);
+                            this.set(spots.get(start + 3), Type.DORMITORY);                                                        
+                        } else if (this.canFitBedroom(spots.get(start + 0)) && this.canFitBath(spots.get(start + 2)) && this.canFitBedroom(spots.get(start + 1))){
+                            this.set(spots.get(start + 0), Type.DORMITORY);
+                            this.set(spots.get(start + 1), Type.DORMITORY);                                                        
+                            this.set(spots.get(start + 2), Type.SANITATION);
+                            this.set(spots.get(start + 3), Type.GYM);
+                        } else {
+                            end -= 1;
+                            continue placementLoop;
+                        }
+                    }
+
+                    for(int i = start; i < end; i++){
+                        this.setWing(spots.get(i), Wing.Sleep);
+                    }
+                        
+                    counts.put(Type.DORMITORY, counts.get(Type.DORMITORY) - dorms);
+                    counts.put(Type.SANITATION, counts.get(Type.SANITATION) - baths);
+                    counts.put(Type.GYM, counts.get(Type.GYM) - gyms);
+                    
+                    end = start;
+                }
+            } //Dormitory wings
+            { //Place remaining randomly
+                int remaining = 0;
+                for (int count :counts.values()){
+                    remaining += count;
+                }
+                int seed = 123456789;
+                while(remaining > 0){
+                    seed = (1103515245 * seed + 12345);
+                    int next = seed % remaining;
+                    Type tnext = null;
+                    for(Type t: counts.keySet()){
+                        next -= counts.get(t);
+                        if (next < 0){
+                            tnext = t;
+                            break;
+                        }
+                    }
+                    counts.put(tnext, counts.get(tnext) - 1);
+                    
+                    int spotCount = 0;
+                    for(XY xy : spots){
+                        if(this.get(xy) == null && this.getWing(xy) == Wing.Unset){
+                            spotCount += 1;
+                        }
+                    }
+                    seed = (1103515245 * seed + 12345);
+                    int targetSpot = seed % spotCount;
+                    
+                    for(XY xy : spots){
+                        if(this.get(xy) == null && this.getWing(xy) == Wing.Unset){
+                            targetSpot -= 1;
+                            if (targetSpot < 0){
+                                this.set(xy, tnext);
+                                break;   
+                            }
+                        }
+                    }
+                    
+                    remaining = 0;
+                    for (int count :counts.values()){
+                        remaining += count;
+                    }
+                }
+            }//placing modules randomly
             
         }
         
     }
+
+    private boolean canFitBedroom(XY xy){
+        int x = xy.x;
+        int y = xy.y;
+        if (
+                this.get(x + 1, y) == Type.AIRLOCK ||
+                this.get(x - 1, y) == Type.AIRLOCK ||
+                this.get(x, y + 1) == Type.AIRLOCK ||
+                this.get(x, y - 1) == Type.AIRLOCK ||
+                this.get(x + 1, y + 1) == Type.AIRLOCK ||
+                this.get(x + 1, y - 1) == Type.AIRLOCK ||
+                this.get(x - 1, y + 1) == Type.AIRLOCK ||
+                this.get(x - 1, y - 1) == Type.AIRLOCK
+                ){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean canFitBath(XY xy){
+        int x = xy.x;
+        int y = xy.y;
+        if (
+                this.get(x + 1, y) == Type.FOOD ||
+                this.get(x - 1, y) == Type.FOOD ||
+                this.get(x, y + 1) == Type.FOOD ||
+                this.get(x, y - 1) == Type.FOOD ||
+                this.get(x + 1, y + 1) == Type.FOOD ||
+                this.get(x + 1, y - 1) == Type.FOOD ||
+                this.get(x - 1, y + 1) == Type.FOOD ||
+                this.get(x - 1, y - 1) == Type.FOOD ||
+                this.get(x + 1, y) == Type.CANTEEN ||
+                this.get(x - 1, y) == Type.CANTEEN ||
+                this.get(x, y + 1) == Type.CANTEEN ||
+                this.get(x, y - 1) == Type.CANTEEN ||
+                this.get(x + 1, y + 1) == Type.CANTEEN ||
+                this.get(x + 1, y - 1) == Type.CANTEEN ||
+                this.get(x - 1, y + 1) == Type.CANTEEN ||
+                this.get(x - 1, y - 1) == Type.CANTEEN
+                ){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
     
     public int getWidth(){
         return this.width;
@@ -233,6 +431,10 @@ public class Plan {
             return null;
         }
         return this.wings[x + y * this.width];
+    }
+    
+    private Wing getWing(final XY xy){
+        return this.getWing(xy.x, xy.y);
     }
     
     private void setWing(final int x, final int y, final Wing w){
