@@ -2,6 +2,7 @@ package edu.umn.d.grenoble.mhcs.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -52,26 +53,33 @@ public class DragDropPanel extends Tab {
             @Override
             public void onEvent(final AreaClickEvent event) {
                 MouseType type = event.getMouseType();
-                Module currentModule = null;
-                int x = event.getX();
-                int y = event.getY();
+                Module currentModule = area1.occupied(event.getX(), event.getY());
+                
                 if(type == MouseType.Pressed){
-                    currentModule = area1.occupied(x, y);
+                    
+                    currentModule = area1.occupied(event.getX(), event.getY());
                     
                     
                         
                     
                 }
                 else if(type == MouseType.Dragged){
-                    if(area1.occupied(event.getX(), event.getY()) == null){
-                        currentModule.setX(event.getX());
-                        currentModule.setY(event.getY());
-                        Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
+                    if(currentModule != null){
+                        
+                    
+                    //if(area1.occupied(event.getX(), event.getY()) == null){
+                        //currentModule.setX(event.getX());
+                        //currentModule.setY(event.getY());
+                        //Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
+                        
+                    //}
                     }
                     
                 }
                 else if(type == MouseType.Released){
-                    
+                    currentModule.setX(event.getX());
+                    currentModule.setY(event.getY());
+                    Bus.bus.fireEvent(new AreaUpdateEvent(area1));
                 }
                 
                
