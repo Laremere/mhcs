@@ -224,6 +224,14 @@ public class Plan {
                     if (counts.get(Type.GYM) > 0){
                         gyms += 1;
                     }
+                    if (baths < 1){
+                        gyms = 0;
+                        dorms = 1;
+                    }
+                    if (dorms < 2){
+                        gyms = 0;
+                    }
+                    
                     while (this.get(spots.get(start - 1)) == null && end - start < dorms + baths + gyms){
                         start -= 1;
                     }
@@ -292,6 +300,7 @@ public class Plan {
                             end -= 1;
                             continue placementLoop;
                         }
+                        
                     }
 
                     for(int i = start; i < end; i++){

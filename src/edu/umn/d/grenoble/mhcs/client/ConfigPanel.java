@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
@@ -328,6 +329,9 @@ public class ConfigPanel extends Tab {
         Area outArea;
         BadAreas badAreas;
         
+        Button saveButton;
+        TextBox saveArea;
+        
         int baseX;
         int baseY;
         final ViewPlanStep viewPlanStep = this;
@@ -336,6 +340,9 @@ public class ConfigPanel extends Tab {
             this.area = area_;
             this.layout = layout_;
             panel.setStyleName("flowPanel_inline");
+            this.saveButton = new Button("Save new config");
+            saveArea = new TextBox();
+
             
             plan = new Plan(this.layout, counts_);
             Bus.bus.fireEvent( new AreaUpdateEvent( plan ));
@@ -388,6 +395,19 @@ public class ConfigPanel extends Tab {
                 panel.add(listY);
                 listY.setSelectedIndex(baseY - 1);
             }
+            {
+                this.saveButton.addClickHandler( new ClickHandler() {
+                    public void onClick(final ClickEvent event) {
+                        AreaHolder.saveArea(saveArea.getText(), viewPlanStep.outArea);
+                        saveArea.setText("");
+                    }
+                });
+            }
+            
+            
+            panel.add(this.saveButton);
+            panel.add(this.saveArea);
+            
             plan();
         }
         
