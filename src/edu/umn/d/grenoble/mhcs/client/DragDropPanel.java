@@ -6,6 +6,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import edu.umn.d.grenoble.mhcs.bus.AreaClickEvent;
@@ -23,7 +25,8 @@ public class DragDropPanel extends Tab {
     ListBox selectionBox;
     Button selectButton;
     Button saveButton;
-    Button loadButton;
+    TextBox saveArea;
+    
     FlowPanel dragDropPanel;
     Area area1;
     
@@ -32,19 +35,27 @@ public class DragDropPanel extends Tab {
         this.selectionBox = new ListBox();
         this.selectButton = new Button("Submit");
         this.saveButton = new Button("Save new config");
-        this.loadButton = new Button("Load config");
+        saveArea = new TextBox();
         this.dragDropPanel = new FlowPanel();
         
         this.dragDropPanel.add(this.selectionBox);
         this.dragDropPanel.add(this.selectButton);
+        this.dragDropPanel.add(this.saveArea);
         this.dragDropPanel.add(this.saveButton);
-        this.dragDropPanel.add(this.loadButton);
+
         
         this.selectButton.addClickHandler( new ClickHandler() {
             public void onClick(final ClickEvent event) {
                 String[] areas = AreaHolder.getAreas();
                 area1 = AreaHolder.getArea(areas[selectionBox.getSelectedIndex()]);
                 Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
+            }
+        });
+        
+        this.saveButton.addClickHandler( new ClickHandler() {
+            public void onClick(final ClickEvent event) {
+                AreaHolder.saveArea(saveArea.getText(), area1);
+                saveArea.setText("");
             }
         });
         
@@ -63,11 +74,11 @@ public class DragDropPanel extends Tab {
                 }
                 else if(type == MouseType.Dragged){
                     if(currentModule != null){
-                    //if(area1.occupied(event.getX(), event.getY()) == null){
+                    if(area1.occupied(event.getX(), event.getY()) == null){
                         currentModule.setX(event.getX());
                         currentModule.setY(event.getY());
                         Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
-                    //}
+                    }
                     }
                     
                 }
