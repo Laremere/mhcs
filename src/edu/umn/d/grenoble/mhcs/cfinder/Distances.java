@@ -42,18 +42,18 @@ public class Distances {
             }
 
             if (get(cur.x - 1, cur.y) == 0){
-                todo.addLast(new XYD(cur.x + 1, cur.y, cur.d + 1));
-                set(cur.x - 1, cur.y, cur.d - 1);
+                todo.addLast(new XYD(cur.x - 1, cur.y, cur.d + 1));
+                set(cur.x - 1, cur.y, cur.d + 1);
             }
 
             if (get(cur.x, cur.y + 1) == 0){
                 todo.addLast(new XYD(cur.x, cur.y + 1, cur.d + 1));
-                set(cur.x + 1, cur.y + 1, cur.d);
+                set(cur.x, cur.y + 1, cur.d + 1);
             }
 
             if (get(cur.x, cur.y - 1) == 0){
                 todo.addLast(new XYD(cur.x, cur.y - 1, cur.d + 1));
-                set(cur.x + 1, cur.y, cur.d + 1);
+                set(cur.x, cur.y - 1, cur.d + 1);
             }
         }
     }

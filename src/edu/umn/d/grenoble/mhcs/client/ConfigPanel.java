@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.cfinder.BadAreas;
+import edu.umn.d.grenoble.mhcs.cfinder.Distances;
 import edu.umn.d.grenoble.mhcs.cfinder.Layout;
 import edu.umn.d.grenoble.mhcs.cfinder.Plan;
 import edu.umn.d.grenoble.mhcs.cfinder.Shape;
@@ -420,12 +421,77 @@ public class ConfigPanel extends Tab {
             
             List<Module> toUse = new ArrayList<Module>(); 
             for(Module m: area.modules){
-                if(m.getStatus() == Status.GOOD){
-                    toUse.add(new Module(m));
-                } else {
-                    outArea.addModule(new Module(m));
+                Module copy = new Module(m);
+                if(copy.getStatus() == Status.GOOD){
+                    toUse.add(copy);
+                }
+                outArea.addModule(copy);
+            }
+            
+            moveModulesLoop:
+            for(int relX = 0; relX < plan.getWidth(); relX++){
+                for(int relY = 0; relY < plan.getHeight(); relY++){
+                    if(plan.get(relX, relY) != null){
+                        Type toGet = plan.get(relX, relY);
+
+                        Distances dist = new Distances(outArea, finalX + relX, finalY + relY);
+
+                        int BestDistance = Area.Width * Area.Height;
+                        Module toMove = null;
+                        for(Module m: toUse){
+                            if (m.getType() == toGet){
+                                int thisDist = dist.get(m.getX(), m.getY());
+                                if (thisDist < BestDistance){
+                                    toMove = m;
+                                    BestDistance = thisDist;
+                                }
+                            }
+                        }
+
+                        if (toMove == null){
+                            Window.alert("Can't reach module of type " + toGet.getTypeName() + " restart config process and use fewer of them to build in this location");
+                            break moveModulesLoop;
+                        }
+                        toUse.remove(toMove);
+                        toMove.setX(finalX + relX);
+                        toMove.setY(finalY + relY);
+                    }
                 }
             }
+            
+            for(Module m: toUse){
+                int x = m.getX();
+                int y = m.getY();
+                int dj = 1;
+                int j = 1;
+                int dx = 2;
+                int dy = 0;
+                for( int i = 0; i < 100000 && 
+                        ( 
+                                (outArea.occupied(x, y) != m && outArea.occupied(x, y) != null ) ||
+                            (
+                                x >= finalX - 1 && y >= finalY - 1 &&
+                                x <= finalX + plan.getWidth() &&
+                                y <= finalY + plan.getHeight()
+                            ) ||
+                            x <= 0 || y <= 0 ||   
+                            x > Area.Width || y > Area.Height);
+                        i += 1){
+                    x += dx;
+                    y += dy;
+                    j -= 1;
+                    if (j <= 0){
+                        j = dj;
+                        dj += 1;
+                        int ty = dy;
+                        dy = dx;
+                        dx = -1 * ty;
+                    }
+                }
+                m.setX(x);
+                m.setY(y);
+            }
+            
             Bus.bus.fireEvent( new AreaUpdateEvent( outArea ));
         }
         
