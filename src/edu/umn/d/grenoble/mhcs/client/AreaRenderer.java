@@ -115,12 +115,19 @@ public class AreaRenderer {
         Bus.bus.addHandler(AreaUpdateEvent.TYPE, new AreaUpdateEventHandler(){
             @Override
             public void onEvent(final AreaUpdateEvent event) {
+                if (event.getMoveType() == null){
+                    areaRenderer.currentView = null;
+                    areaRenderer.splitView = null;
+                } else {
+                    if(areaRenderer.currentView == null){
+                        return; //No area to render, ignore move commands
+                    }
+                }
+                
                 if (event.getArea() != null){
                     areaRenderer.currentView = new Area(event.getArea());
                     if (event.getSideArea() != null){
                         areaRenderer.splitView = new Area(event.getSideArea());
-                    } else {
-                        areaRenderer.splitView = null;
                     }
                 } else if (event.getLayout() != null) {
                     areaRenderer.RenderLayout(event.getLayout());

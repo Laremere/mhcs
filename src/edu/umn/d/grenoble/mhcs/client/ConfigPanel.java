@@ -1,6 +1,8 @@
 package edu.umn.d.grenoble.mhcs.client;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -19,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
+import edu.umn.d.grenoble.mhcs.cfinder.BadAreas;
 import edu.umn.d.grenoble.mhcs.cfinder.Layout;
 import edu.umn.d.grenoble.mhcs.cfinder.Plan;
 import edu.umn.d.grenoble.mhcs.cfinder.Shape;
@@ -299,6 +302,10 @@ public class ConfigPanel extends Tab {
             int out_of = layout.SpotCount();
             next.setEnabled(sumOfModules <= out_of);
             countLabel.setText("Using " + sumOfModules + " out of " + out_of + " module spots.");
+            
+            Plan plan = new Plan(this.layout, this.counts);
+            Bus.bus.fireEvent( new AreaUpdateEvent( plan ));
+
         }
         
         Widget getPanel(){
@@ -312,13 +319,132 @@ public class ConfigPanel extends Tab {
         Area area;
         Layout layout;
         Plan plan;
+        Area outArea;
+        BadAreas badAreas;
+        
+        int baseX;
+        int baseY;
+        final ViewPlanStep viewPlanStep = this;
         
         public ViewPlanStep(final Area area_, final Layout layout_, final Map<Type, Integer> counts_){
             this.area = area_;
             this.layout = layout_;
+            panel.setStyleName("flowPanel_inline");
             
             plan = new Plan(this.layout, counts_);
             Bus.bus.fireEvent( new AreaUpdateEvent( plan ));
+            badAreas = new BadAreas(area);
+            
+            int AverageX = 0;
+            int AverageY = 0;
+            int AverageCount = 0;
+            for (Module m : area.modules){
+                if(m.getStatus() == Status.GOOD){
+                    AverageX += m.getX();
+                    AverageY += m.getY();
+                    AverageCount += 1;
+                }
+            }
+            AverageX /= AverageCount;
+            AverageY /= AverageCount;
+            baseX = AverageX - plan.getWidth() / 2;
+            baseY = AverageY - plan.getHeight() / 2;
+
+            {
+                final ListBox listX = new ListBox();
+                for (int i = 1; i <= Area.Width; i+= 1){
+                    listX.addItem("" + i);
+                }
+                listX.addChangeHandler(new ChangeHandler(){
+                    @Override
+                    public void onChange(ChangeEvent event) {
+                        viewPlanStep.baseX = listX.getSelectedIndex() + 1;
+                        viewPlanStep.plan();
+                    }
+                });
+                panel.add(new Label("X"));
+                panel.add(listX);
+                listX.setSelectedIndex(baseX - 1);
+            }
+            {
+                final ListBox listY = new ListBox();
+                for (int i = 1; i <= Area.Height; i+= 1){
+                    listY.addItem("" + i);
+                }
+                listY.addChangeHandler(new ChangeHandler(){
+                    @Override
+                    public void onChange(ChangeEvent event) {
+                        viewPlanStep.baseY = listY.getSelectedIndex() + 1;
+                        viewPlanStep.plan();
+                    }
+                });
+                panel.add(new Label("Y"));
+                panel.add(listY);
+                listY.setSelectedIndex(baseY - 1);
+            }
+            plan();
+        }
+        
+        void plan(){
+            int finalX = baseX;
+            int finalY = baseY;
+            if(!test(finalX, finalY)){
+                outerLoop:
+                for (int distance = 1; distance < Area.Width; distance ++){
+                    for (int i = 0; i < distance * 2; i++){
+                        finalX = baseX - distance + i;
+                        finalY = baseY + distance;
+                        if(test(finalX, finalY)){
+                            break outerLoop;
+                        }
+                        finalX = baseX + distance;
+                        finalY = baseY + distance - i;
+                        if(test(finalX, finalY)){
+                            break outerLoop;
+                        }
+                        finalX = baseX + distance - i;
+                        finalY = baseY - distance;
+                        if(test(finalX, finalY)){
+                            break outerLoop;
+                        }
+                        finalX = baseX - distance;
+                        finalY = baseY - distance + i;
+                        if(test(finalX, finalY)){
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+            
+            outArea = new Area();
+            
+            List<Module> toUse = new ArrayList<Module>(); 
+            for(Module m: area.modules){
+                if(m.getStatus() == Status.GOOD){
+                    toUse.add(new Module(m));
+                } else {
+                    outArea.addModule(new Module(m));
+                }
+            }
+            Bus.bus.fireEvent( new AreaUpdateEvent( outArea ));
+        }
+        
+        boolean test(int baseX_, int baseY_){
+            if(baseX_ < 1 || baseY_ < 1 || baseX_ + plan.getWidth() - 1 > Area.Width
+                    || baseY_ + plan.getHeight() - 1 > Area.Height){
+                return false;
+            }
+            
+            for (int relX = 0; relX < plan.getWidth(); relX ++){
+                for (int relY = 0; relY < plan.getHeight(); relY ++){
+                    if(plan.get(relX, relY) != null){
+                        if(! badAreas.get(baseX_ + relX, baseY_ + relY)){
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
         
         Widget getPanel(){

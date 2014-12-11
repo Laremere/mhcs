@@ -1,5 +1,7 @@
 package edu.umn.d.grenoble.mhcs.cfinder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import edu.umn.d.grenoble.mhcs.modules.Type;
@@ -25,6 +27,54 @@ public class Plan {
                 }
             }
         }
+        
+        //Airlock
+        {
+            {
+                List<Integer> open = new ArrayList<Integer>();
+                for(int i = 0; i < this.height; i+= 1){
+                    if(this.getWing(this.width - 1, i) == Wing.Unset){
+                        open.add(i);
+                    }
+                }
+                this.setWing(this.width - 1, open.get(open.size() / 2), Wing.Airlock);
+                this.set(this.width - 1, open.get(open.size() / 2), Type.AIRLOCK);
+            }
+            if(counts.get(Type.AIRLOCK) >= 2){
+                List<Integer> open = new ArrayList<Integer>();
+                for(int i = this.height - 1; i >= 0; i-= 1){
+                    if(this.getWing(0, i) == Wing.Unset){
+                        open.add(i);
+                    }
+                }
+                this.setWing(0, open.get(open.size() / 2), Wing.Airlock);
+                this.set(0, open.get(open.size() / 2), Type.AIRLOCK);
+            }
+            if(counts.get(Type.AIRLOCK) >= 3){
+                List<Integer> open = new ArrayList<Integer>();
+                for(int i = 0; i < this.width; i+= 1){
+                    if(this.getWing(i, 0) == Wing.Unset){
+                        open.add(i);
+                    }
+                }
+                int x = open.get(open.size() / 2);
+                this.setWing(x, 0, Wing.Airlock);
+                this.set(x, 0, Type.AIRLOCK);
+            }
+            if(counts.get(Type.AIRLOCK) >= 4){
+                List<Integer> open = new ArrayList<Integer>();
+                int y = this.height - 1;
+                for(int i = 0; i < this.width; i+= 1){
+                    if(this.getWing(i, y) == Wing.Unset){
+                        open.add(i);
+                    }
+                }
+                int x = open.get(open.size() / 2);
+                this.setWing(x, y, Wing.Airlock);
+                this.set(x, y, Type.AIRLOCK);
+            }
+        }
+        
     }
     
     public int getWidth(){
