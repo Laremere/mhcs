@@ -50,30 +50,23 @@ public class DragDropPanel extends Tab {
         
         final DragDropPanel dragDropPanel = this;
         Bus.bus.addHandler(AreaClickEvent.TYPE, new AreaClickEventHandler() {
+            Module currentModule;
             
             @Override
             public void onEvent(final AreaClickEvent event) {
                 if(dragDropPanel.isCurrent){
                 MouseType type = event.getMouseType();
-                Module currentModule = area1.occupied(event.getX(), event.getY());
+                
                 
                 if(type == MouseType.Pressed){
-                    
                     currentModule = area1.occupied(event.getX(), event.getY());
-                    
-                    
-                        
-                    
                 }
                 else if(type == MouseType.Dragged){
                     if(currentModule != null){
-                        
-                    
                     //if(area1.occupied(event.getX(), event.getY()) == null){
                         currentModule.setX(event.getX());
                         currentModule.setY(event.getY());
                         Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
-                        
                     //}
                     }
                     
