@@ -105,8 +105,8 @@ public class AddModulesPanel extends Tab{
         this.thisPanel.setWidget(1, 9, this.cancelButton);
         this.thisPanel.setWidget(0, 11, this.loadButton);
         this.thisPanel.setWidget(0, 12, this.saveButton);
-        this.thisPanel.setWidget(1, 11, this.testCaseButton);
-        this.thisPanel.setWidget(1, 12, this.testCaseText);
+        this.thisPanel.setWidget(1, 6, this.testCaseButton);
+        this.thisPanel.setWidget(1, 7, this.testCaseText);
         
         final AddModulesPanel addModulesPanel = this;
         
