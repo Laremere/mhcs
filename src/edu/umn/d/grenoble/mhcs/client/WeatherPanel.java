@@ -1,5 +1,7 @@
 package edu.umn.d.grenoble.mhcs.client;
 
+import java.util.Timer;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
@@ -116,6 +118,10 @@ public class WeatherPanel {
         this.weatherTable.add(this.weatherHeader);
         this.weatherTable.add(new Label(this.tempString + "  " + this.stringTemp + " Degrees C"));
         this.weatherTable.add(new Label(this.visString + " " + this.stringVis + " Km"));
+        if(stringHour.equals("undefined")) {
+            stringHour = "16";
+            stringMinute = "19";
+        }
         this.weatherTable.add(new Label("Sunset time: " + this.stringHour + ":" + this.stringMinute));
         this.weatherTable.add(this.wunderLogo);
         
