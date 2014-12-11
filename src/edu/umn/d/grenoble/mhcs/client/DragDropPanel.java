@@ -48,10 +48,12 @@ public class DragDropPanel extends Tab {
             }
         });
         
+        final DragDropPanel dragDropPanel = this;
         Bus.bus.addHandler(AreaClickEvent.TYPE, new AreaClickEventHandler() {
             
             @Override
             public void onEvent(final AreaClickEvent event) {
+                if(dragDropPanel.isCurrent){
                 MouseType type = event.getMouseType();
                 Module currentModule = area1.occupied(event.getX(), event.getY());
                 
@@ -68,22 +70,23 @@ public class DragDropPanel extends Tab {
                         
                     
                     //if(area1.occupied(event.getX(), event.getY()) == null){
-                        //currentModule.setX(event.getX());
-                        //currentModule.setY(event.getY());
-                        //Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
+                        currentModule.setX(event.getX());
+                        currentModule.setY(event.getY());
+                        Bus.bus.fireEvent( new AreaUpdateEvent(area1) );
                         
                     //}
                     }
                     
                 }
                 else if(type == MouseType.Released){
-                    currentModule.setX(event.getX());
-                    currentModule.setY(event.getY());
-                    Bus.bus.fireEvent(new AreaUpdateEvent(area1));
+                    //currentModule.setX(event.getX());
+                    //currentModule.setY(event.getY());
+                    //Bus.bus.fireEvent(new AreaUpdateEvent(area1));
                 }
                 
                
-            }     
+            }  
+            }
         });        
         
     }

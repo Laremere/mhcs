@@ -188,7 +188,7 @@ public class AddModulesPanel extends Tab{
             
             @Override
             public void onEvent(final AreaClickEvent event) {
-                
+                if(addModulesPanel.isCurrent){
                 addModulesPanel.moduleToEdit = addModulesPanel.moduleList.occupied( event.getX(), event.getY() );
                 addModulesPanel.coorX.setText( Integer.toString( addModulesPanel.moduleToEdit.getX() ) );
                 addModulesPanel.coorY.setText( Integer.toString( addModulesPanel.moduleToEdit.getY() ) );
@@ -206,7 +206,8 @@ public class AddModulesPanel extends Tab{
                         break;
                     }
                 }
-            }     
+            }
+            }
         });
         
         this.testCaseButton.addClickHandler( new ClickHandler() {
