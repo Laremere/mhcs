@@ -81,6 +81,10 @@ public class MarsHabitatConfigurationSystem implements EntryPoint {
                 @Override
                 public void onSelection(final SelectionEvent<Integer> event) {
                     Bus.bus.fireEvent( new AreaUpdateEvent());
+                    for (Tab t : tabs){
+                        t.isCurrent = false;
+                    }
+                    tabs[event.getSelectedItem()].isCurrent = true;
                     tabs[event.getSelectedItem()].switchedTo();
                 }
             });

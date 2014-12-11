@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.cfinder.Layout;
+import edu.umn.d.grenoble.mhcs.cfinder.Plan;
 import edu.umn.d.grenoble.mhcs.cfinder.Shape;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -230,6 +231,7 @@ public class ConfigPanel extends Tab {
         Map<Type, Integer> counts = new HashMap<Type, Integer>();
         Label countLabel = new Label();
         Button next = new Button("next");
+        final CountOfEachStep coes = this;
         
         public CountOfEachStep(Area area_, Layout layout_){
             area = area_;
@@ -272,6 +274,16 @@ public class ConfigPanel extends Tab {
                     panel.add(numOf);
                 }
             }
+            
+            {
+                next.addClickHandler(new ClickHandler(){
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        configPanel.holder.setWidget(new ViewPlanStep(coes.area, coes.layout, coes.counts).getPanel());
+                    }
+                });
+            }
+            
             panel.add(countLabel);
             panel.add(next);
             updateCount();
@@ -291,6 +303,26 @@ public class ConfigPanel extends Tab {
         
         Widget getPanel(){
             return wpanel;
+        }
+    }
+    
+    class ViewPlanStep{
+        FlowPanel panel = new FlowPanel();
+        
+        Area area;
+        Layout layout;
+        Plan plan;
+        
+        public ViewPlanStep(final Area area_, final Layout layout_, final Map<Type, Integer> counts_){
+            this.area = area_;
+            this.layout = layout_;
+            
+            plan = new Plan(this.layout, counts_);
+            Bus.bus.fireEvent( new AreaUpdateEvent( plan ));
+        }
+        
+        Widget getPanel(){
+            return panel;
         }
     }
 }

@@ -25,6 +25,7 @@ import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEvent;
 import edu.umn.d.grenoble.mhcs.bus.AreaUpdateEventHandler;
 import edu.umn.d.grenoble.mhcs.bus.Bus;
 import edu.umn.d.grenoble.mhcs.cfinder.Layout;
+import edu.umn.d.grenoble.mhcs.cfinder.Plan;
 import edu.umn.d.grenoble.mhcs.cfinder.Shape;
 import edu.umn.d.grenoble.mhcs.modules.Area;
 import edu.umn.d.grenoble.mhcs.modules.Module;
@@ -123,6 +124,9 @@ public class AreaRenderer {
                     }
                 } else if (event.getLayout() != null) {
                     areaRenderer.RenderLayout(event.getLayout());
+                    return;
+                } else if (event.getPlan() != null){ 
+                    areaRenderer.RenderPlan(event.getPlan());
                     return;
                 } else if (event.getMoveType() == AreaUpdateEvent.MoveType.ZoomIn){
                     areaRenderer.tileSize += areaRenderer.tileSizeStep;
@@ -301,6 +305,29 @@ public class AreaRenderer {
                 }
             }
         }
+    }
+    
+    private void RenderPlan(final Plan plan){
+        final int BoxWidth = Math.min(canvasWidth / plan.getWidth(), canvasHeight / plan.getHeight());
+        
+        Context2d ctx = this.canvas.getContext2d();
+        ctx.setFillStyle("#ffffff");
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        for(int x = 0; x < plan.getWidth(); x += 1){
+            for(int y = 0; y < plan.getHeight(); y+= 1){
+                Plan.Wing w = plan.getWing(x, y);
+                if (w != null){
+                    ctx.setFillStyle(w.color);
+                    ctx.fillRect(x * BoxWidth, canvasHeight - (y + 1)* BoxWidth, BoxWidth, BoxWidth);
+                }
+                
+                Type t = plan.get(x, y);
+                if (t != null){
+                    ctx.drawImage(this.images.get(t.getImageUrl()), x * BoxWidth + 1, canvasHeight - (y + 1)* BoxWidth + 1, BoxWidth - 2, BoxWidth - 2);
+                }
+            }
+        }
+        
     }
     
     private void RenderEmpty(){
