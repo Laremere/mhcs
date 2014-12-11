@@ -23,13 +23,94 @@ public class Plan {
                     this.set(x + 1, y + 1, Type.PLAIN);
                     this.setWing(x + 1, y + 1, Wing.Plain);
                 } else if (layout.isSpot(x, y)){
-                    this.setWing(x + 1, y + 1, Wing.Unset);
+                    this.setWing(x + 1, y + 1, Wing.Unseen);
                 }
             }
         }
         
-        //Airlock
         {
+            ArrayList<XY> spots = new ArrayList<XY>();
+            int x;
+            int y;
+            {
+                List<Integer> open = new ArrayList<Integer>();
+                for(int i = 0; i < this.height; i+= 1){
+                    if(this.getWing(this.width - 1, i) == Wing.Unseen){
+                        open.add(i);
+                    }
+                }
+                x = this.width - 1;
+                y = open.get(open.size() / 2);
+            }
+            {
+                findLoop:
+                while(true){
+                    while(true){
+                        spots.add(new XY(x,y));
+                        this.setWing(x, y, Wing.Unset);
+                        if(this.getWing(x + 1, y) == Wing.Unseen){
+                            x += 1;
+                            continue;
+                        }
+                        if(this.getWing(x - 1, y) == Wing.Unseen){
+                            x -= 1;
+                            continue;
+                        }
+                        if(this.getWing(x, y + 1) == Wing.Unseen){
+                            y += 1;
+                            continue;
+                        }
+                        if(this.getWing(x, y -1) == Wing.Unseen){
+                            y -= 1;
+                            continue;
+                        }
+                        if(this.getWing(x + 1, y + 1) == Wing.Unseen){
+                            x += 1;
+                            y += 1;
+                            continue;
+                        }
+                        if(this.getWing(x - 1, y + 1) == Wing.Unseen){
+                            x -= 1;
+                            y += 1;
+                            continue;
+                        }
+                        if(this.getWing(x + 1, y - 1) == Wing.Unseen){
+                            x += 1;
+                            y -= 1;
+                            continue;
+                        }
+                        if(this.getWing(x - 1, y - 1) == Wing.Unseen){
+                            x -= 1;
+                            y -= 1;
+                            continue;
+                        }
+
+                        break;
+                    }
+                    
+                    for(x = 0; x < this.width; x++){
+                        for(y = 0; y < this.height; y++){
+                            if(this.getWing(x, y) == Wing.Unseen){
+                                continue findLoop;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            boolean a = false;
+            for(XY xy : spots){
+                if(a)
+                this.setWing(xy.x, xy.y, Wing.Food);
+                a = !a;
+            }
+            
+            this.setWing(spots.get(0).x, spots.get(0).y, Wing.Airlock);
+            this.set(spots.get(0).x, spots.get(0).y, Type.AIRLOCK);
+        }
+        //Airlock
+        /*{
             {
                 List<Integer> open = new ArrayList<Integer>();
                 for(int i = 0; i < this.height; i+= 1){
@@ -73,7 +154,7 @@ public class Plan {
                 this.setWing(x, y, Wing.Airlock);
                 this.set(x, y, Type.AIRLOCK);
             }
-        }
+        }*/
         
     }
     
@@ -94,6 +175,9 @@ public class Plan {
     }
     
     public Wing getWing(final int x, final int y){
+        if (x < 0 || y < 0 || x >= this.width || y >= this.height){
+            return null;
+        }
         return this.wings[x + y * this.width];
     }
     
@@ -106,12 +190,23 @@ public class Plan {
         Airlock("#ffff00"),
         Sleep("#0000ff"),
         Food("#00ff00"),
-        Unset("#555555");
+        Unset("#555555"),
+        Unseen("#111111");
         
         public String color; 
         
         Wing(String color_){
             color = color_;
         }
+    }
+    
+    private class XY{
+        int x;
+        int y;
+        public XY(int x_, int y_){
+            x = x_;
+            y = y_;
+        }
+    
     }
 }
